@@ -5,6 +5,15 @@ import { useCart } from '@/lib/cart';
 import { useEffect, useState } from 'react';
 import { Navigation } from '@/components/Navigation';
 
+const CartEmptyIcon = () => (
+  <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+    <path d="M6 6h15l-1.5 9h-12z" />
+    <circle cx="9" cy="20" r="1" />
+    <circle cx="18" cy="20" r="1" />
+    <path d="M6 6L5 3H2" />
+  </svg>
+);
+
 export default function CartPage() {
   const { items, removeItem, updateQuantity, getTotalPrice, clearCart } = useCart();
   const [mounted, setMounted] = useState(false);
@@ -54,7 +63,7 @@ export default function CartPage() {
         {items.length === 0 ? (
           /* Empty Cart */
           <div className="card light" style={{ gridColumn: 'span 12', padding: 80, textAlign: 'center' }}>
-            <div style={{ fontSize: '4rem', marginBottom: 20 }}>🛒</div>
+            <div style={{ marginBottom: 20, color: '#888' }}><CartEmptyIcon /></div>
             <h2 style={{ fontSize: '2rem', fontWeight: 800, textTransform: 'uppercase', marginBottom: 15 }}>
               Your Cart is Empty
             </h2>

@@ -77,6 +77,20 @@ nav.site-nav {
   margin-left: 32px;
 }
 
+.nav-icon {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.nav-icon svg {
+  flex-shrink: 0;
+}
+
+.nav-account-text {
+  font-size: 0.8rem;
+}
+
 .nav-cart {
   position: relative;
 }
@@ -100,22 +114,25 @@ nav.site-nav {
 .mobile-controls {
   display: none;
   align-items: center;
-  gap: 15px;
+  gap: 20px;
 }
 
 .mobile-controls a {
   color: white;
   text-decoration: none;
-  font-size: 1.1rem;
+  display: flex;
+  align-items: center;
 }
 
 .hamburger {
   background: none;
   border: none;
   color: white;
-  font-size: 1.5rem;
   cursor: pointer;
   padding: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .mobile-menu-overlay {
@@ -571,5 +588,69 @@ main {
   .pill {
     padding: 5px 12px;
     font-size: 0.65rem;
+  }
+}
+
+/* Product page responsive */
+.product-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+}
+
+.product-image-card {
+  height: 70vh;
+  min-height: 500px;
+}
+
+.product-info {
+  padding: 20px 0;
+}
+
+.product-title {
+  font-size: 3.5rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: -0.03em;
+  line-height: 0.9;
+  margin-bottom: 20px;
+}
+
+.product-price {
+  font-size: 2.5rem;
+  font-weight: 800;
+  margin-bottom: 30px;
+}
+
+@media (max-width: 900px) {
+  .product-layout {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  
+  .product-image-card {
+    height: 50vh;
+    min-height: 350px;
+  }
+  
+  .product-info {
+    padding: 0 10px;
+  }
+  
+  .product-title {
+    font-size: 2.5rem;
+  }
+  
+  .product-price {
+    font-size: 2rem;
+  }
+  
+  .product-desc {
+    font-size: 1rem !important;
+  }
+  
+  .product-btn {
+    padding: 16px 30px !important;
+    font-size: 0.9rem !important;
   }
 }

@@ -220,10 +220,10 @@ export default function ProductPage() {
     <>
       <Navigation activeLink={product.category as 'speakers' | 'headphones' | 'televisions'} />
 
-      <main style={{ paddingTop: 120 }}>
+      <main style={{ paddingTop: 100 }}>
         {/* Breadcrumb */}
-        <div style={{ gridColumn: 'span 12', marginBottom: 30 }}>
-          <div style={{ display: 'flex', gap: 10, alignItems: 'center', fontSize: '0.85rem' }}>
+        <div style={{ gridColumn: 'span 12', marginBottom: 20, padding: '0 10px' }}>
+          <div style={{ display: 'flex', gap: 10, alignItems: 'center', fontSize: '0.85rem', flexWrap: 'wrap' }}>
             <Link href="/" style={{ color: '#888', textDecoration: 'none' }}>Home</Link>
             <span style={{ color: '#888' }}>/</span>
             <Link href={`/${product.category}`} style={{ color: '#888', textDecoration: 'none', textTransform: 'capitalize' }}>{product.category}</Link>
@@ -232,137 +232,144 @@ export default function ProductPage() {
           </div>
         </div>
 
-        {/* Product Image */}
-        <div className="card dark" style={{ gridColumn: 'span 7', height: '70vh', display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative' }}>
-          <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', fontSize: '20rem', fontWeight: 900, opacity: 0.1, color: 'var(--accent-orange)' }}>
-            {product.name.split(' ')[1]?.substring(0, 2) || product.name.substring(0, 2)}
-          </div>
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src={product.image}
-            alt={product.name}
-            style={{ maxWidth: '70%', maxHeight: '80%', objectFit: 'contain', filter: 'drop-shadow(0 20px 40px rgba(0,0,0,0.4))', zIndex: 2 }}
-          />
-        </div>
-
-        {/* Product Info */}
-        <div style={{ gridColumn: 'span 5', padding: '0 20px' }}>
-          <div className="label text-orange" style={{ marginBottom: 10 }}>{product.subtitle}</div>
-          <h1 style={{ fontSize: '3.5rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '-0.03em', lineHeight: 0.9, marginBottom: 20 }}>
-            {product.name}
-          </h1>
-          
-          <p style={{ fontSize: '1.1rem', color: '#666', lineHeight: 1.6, marginBottom: 30 }}>
-            {product.longDescription}
-          </p>
-
-          {/* Price */}
-          <div style={{ fontSize: '2.5rem', fontWeight: 800, marginBottom: 30 }}>
-            {product.price}
-          </div>
-
-          {/* Color Selection */}
-          <div style={{ marginBottom: 30 }}>
-            <div className="label" style={{ marginBottom: 15 }}>Color: {product.colors[selectedColor].name}</div>
-            <div style={{ display: 'flex', gap: 12 }}>
-              {product.colors.map((color, i) => (
-                <ColorDot
-                  key={i}
-                  color={color.hex}
-                  selected={selectedColor === i}
-                  onClick={() => setSelectedColor(i)}
-                />
-              ))}
+        {/* Product Layout */}
+        <div className="product-layout" style={{ gridColumn: 'span 12' }}>
+          {/* Product Image */}
+          <div className="card dark product-image-card" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative', overflow: 'hidden' }}>
+            <div className="product-bg-text" style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', fontSize: 'clamp(8rem, 20vw, 20rem)', fontWeight: 900, opacity: 0.1, color: 'var(--accent-orange)', whiteSpace: 'nowrap' }}>
+              {product.name.split(' ')[1]?.substring(0, 2) || product.name.substring(0, 2)}
             </div>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={product.image}
+              alt={product.name}
+              style={{ maxWidth: '70%', maxHeight: '80%', objectFit: 'contain', filter: 'drop-shadow(0 20px 40px rgba(0,0,0,0.4))', zIndex: 2 }}
+            />
           </div>
 
-          {/* Quantity */}
-          <div style={{ marginBottom: 30 }}>
-            <div className="label" style={{ marginBottom: 15 }}>Quantity</div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 15 }}>
-              <button
-                onClick={() => setQuantity(q => Math.max(1, q - 1))}
-                style={{ width: 40, height: 40, border: '1px solid #000', background: 'transparent', fontSize: '1.5rem', cursor: 'pointer' }}
-              >
-                −
-              </button>
-              <span style={{ fontSize: '1.2rem', fontWeight: 600, width: 40, textAlign: 'center' }}>{quantity}</span>
-              <button
-                onClick={() => setQuantity(q => q + 1)}
-                style={{ width: 40, height: 40, border: '1px solid #000', background: 'transparent', fontSize: '1.5rem', cursor: 'pointer' }}
-              >
-                +
-              </button>
+          {/* Product Info */}
+          <div className="product-info">
+            <div className="label text-orange" style={{ marginBottom: 10 }}>{product.subtitle}</div>
+            <h1 className="product-title">
+              {product.name}
+            </h1>
+            
+            <p className="product-desc" style={{ fontSize: '1.1rem', color: '#666', lineHeight: 1.6, marginBottom: 30 }}>
+              {product.longDescription}
+            </p>
+
+            {/* Price */}
+            <div className="product-price">
+              {product.price}
             </div>
-          </div>
 
-          {/* Add to Cart */}
-          <button
-            onClick={handleAddToCart}
-            style={{
-              width: '100%',
-              padding: '20px 40px',
-              background: added ? '#4CAF50' : 'var(--accent-orange)',
-              border: 'none',
-              color: 'white',
-              fontSize: '1rem',
-              fontWeight: 800,
-              textTransform: 'uppercase',
-              cursor: 'pointer',
-              marginBottom: 15,
-              transition: 'background 0.3s ease',
-            }}
-          >
-            {added ? '✓ Added to Cart' : 'Add to Cart'}
-          </button>
-          
-          <Link
-            href="/cart"
-            style={{
-              display: 'block',
-              width: '100%',
-              padding: '20px 40px',
-              background: '#000',
-              border: 'none',
-              color: 'white',
-              fontSize: '1rem',
-              fontWeight: 800,
-              textTransform: 'uppercase',
-              textAlign: 'center',
-              textDecoration: 'none',
-              marginBottom: 15,
-            }}
-          >
-            View Cart
-          </Link>
-          
-          <button
-            style={{
-              width: '100%',
-              padding: '20px 40px',
-              background: 'transparent',
-              border: '1px solid #000',
-              color: '#000',
-              fontSize: '1rem',
-              fontWeight: 800,
-              textTransform: 'uppercase',
-              cursor: 'pointer',
-            }}
-          >
-            Find in Store
-          </button>
+            {/* Color Selection */}
+            <div style={{ marginBottom: 30 }}>
+              <div className="label" style={{ marginBottom: 15 }}>Color: {product.colors[selectedColor].name}</div>
+              <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
+                {product.colors.map((color, i) => (
+                  <ColorDot
+                    key={i}
+                    color={color.hex}
+                    selected={selectedColor === i}
+                    onClick={() => setSelectedColor(i)}
+                  />
+                ))}
+              </div>
+            </div>
+
+            {/* Quantity */}
+            <div style={{ marginBottom: 30 }}>
+              <div className="label" style={{ marginBottom: 15 }}>Quantity</div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 15 }}>
+                <button
+                  onClick={() => setQuantity(q => Math.max(1, q - 1))}
+                  style={{ width: 40, height: 40, border: '1px solid #000', background: 'transparent', fontSize: '1.5rem', cursor: 'pointer' }}
+                >
+                  −
+                </button>
+                <span style={{ fontSize: '1.2rem', fontWeight: 600, width: 40, textAlign: 'center' }}>{quantity}</span>
+                <button
+                  onClick={() => setQuantity(q => q + 1)}
+                  style={{ width: 40, height: 40, border: '1px solid #000', background: 'transparent', fontSize: '1.5rem', cursor: 'pointer' }}
+                >
+                  +
+                </button>
+              </div>
+            </div>
+
+            {/* Add to Cart */}
+            <button
+              onClick={handleAddToCart}
+              className="product-btn"
+              style={{
+                width: '100%',
+                padding: '20px 40px',
+                background: added ? '#4CAF50' : 'var(--accent-orange)',
+                border: 'none',
+                color: 'white',
+                fontSize: '1rem',
+                fontWeight: 800,
+                textTransform: 'uppercase',
+                cursor: 'pointer',
+                marginBottom: 15,
+                transition: 'background 0.3s ease',
+              }}
+            >
+              {added ? '✓ Added to Cart' : 'Add to Cart'}
+            </button>
+            
+            <Link
+              href="/cart"
+              className="product-btn"
+              style={{
+                display: 'block',
+                width: '100%',
+                padding: '20px 40px',
+                background: '#000',
+                border: 'none',
+                color: 'white',
+                fontSize: '1rem',
+                fontWeight: 800,
+                textTransform: 'uppercase',
+                textAlign: 'center',
+                textDecoration: 'none',
+                marginBottom: 15,
+                boxSizing: 'border-box',
+              }}
+            >
+              View Cart
+            </Link>
+            
+            <button
+              className="product-btn"
+              style={{
+                width: '100%',
+                padding: '20px 40px',
+                background: 'transparent',
+                border: '1px solid #000',
+                color: '#000',
+                fontSize: '1rem',
+                fontWeight: 800,
+                textTransform: 'uppercase',
+                cursor: 'pointer',
+              }}
+            >
+              Find in Store
+            </button>
+          </div>
         </div>
 
         {/* Specifications */}
-        <div className="card light" style={{ gridColumn: 'span 12', padding: 60, marginTop: 20 }}>
-          <h2 style={{ fontSize: '2rem', fontWeight: 800, textTransform: 'uppercase', marginBottom: 30 }}>
+        <div className="card light" style={{ gridColumn: 'span 12', padding: 'clamp(30px, 5vw, 60px)', marginTop: 20 }}>
+          <h2 style={{ fontSize: 'clamp(1.5rem, 3vw, 2rem)', fontWeight: 800, textTransform: 'uppercase', marginBottom: 30 }}>
             Specifications
           </h2>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: 30 }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', gap: 'clamp(15px, 3vw, 30px)' }}>
             {product.specs.map((spec, i) => (
               <div key={i}>
                 <div className="label" style={{ marginBottom: 8, color: '#888' }}>{spec.label}</div>
-                <div style={{ fontSize: '1.25rem', fontWeight: 600 }}>{spec.value}</div>
+                <div style={{ fontSize: 'clamp(1rem, 2vw, 1.25rem)', fontWeight: 600 }}>{spec.value}</div>
               </div>
             ))}
           </div>

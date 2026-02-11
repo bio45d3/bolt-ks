@@ -5,6 +5,38 @@ import { useCart } from '@/lib/cart';
 import { useAuth } from '@/lib/auth';
 import { useEffect, useState } from 'react';
 
+// SVG Icons
+const CartIcon = () => (
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+    <path d="M6 6h15l-1.5 9h-12z" />
+    <circle cx="9" cy="20" r="1" />
+    <circle cx="18" cy="20" r="1" />
+    <path d="M6 6L5 3H2" />
+  </svg>
+);
+
+const UserIcon = () => (
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+    <circle cx="12" cy="8" r="4" />
+    <path d="M4 20c0-4 4-6 8-6s8 2 8 6" />
+  </svg>
+);
+
+const MenuIcon = () => (
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+    <line x1="3" y1="6" x2="21" y2="6" />
+    <line x1="3" y1="12" x2="21" y2="12" />
+    <line x1="3" y1="18" x2="21" y2="18" />
+  </svg>
+);
+
+const CloseIcon = () => (
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+    <line x1="18" y1="6" x2="6" y2="18" />
+    <line x1="6" y1="6" x2="18" y2="18" />
+  </svg>
+);
+
 interface NavigationProps {
   activeLink?: 'speakers' | 'headphones' | 'televisions' | 'support';
 }
@@ -45,28 +77,31 @@ export function Navigation({ activeLink }: NavigationProps) {
           <Link href="/headphones" style={linkStyle('headphones')}>Headphones</Link>
           <Link href="/televisions" style={linkStyle('televisions')}>Televisions</Link>
           <Link href="/support" style={linkStyle('support')}>Support</Link>
-          <Link href="/cart" className="nav-cart">
-            🛒
+          <Link href="/cart" className="nav-cart nav-icon">
+            <CartIcon />
             {totalItems > 0 && <span className="cart-badge">{totalItems}</span>}
           </Link>
-          <Link href={mounted && isAuthenticated ? '/account' : '/login'} className="nav-account">
-            {mounted && isAuthenticated ? `👤 ${user?.firstName || 'Account'}` : '👤 Sign In'}
+          <Link href={mounted && isAuthenticated ? '/account' : '/login'} className="nav-account nav-icon">
+            <UserIcon />
+            <span className="nav-account-text">{mounted && isAuthenticated ? user?.firstName || 'Account' : 'Sign In'}</span>
           </Link>
         </div>
 
         {/* Mobile controls */}
         <div className="mobile-controls">
-          <Link href="/cart" className="nav-cart">
-            🛒
+          <Link href="/cart" className="nav-cart nav-icon">
+            <CartIcon />
             {totalItems > 0 && <span className="cart-badge">{totalItems}</span>}
           </Link>
-          <Link href={mounted && isAuthenticated ? '/account' : '/login'}>👤</Link>
+          <Link href={mounted && isAuthenticated ? '/account' : '/login'} className="nav-icon">
+            <UserIcon />
+          </Link>
           <button 
             className="hamburger" 
             onClick={() => setMenuOpen(!menuOpen)}
             aria-label="Menu"
           >
-            {menuOpen ? '✕' : '☰'}
+            {menuOpen ? <CloseIcon /> : <MenuIcon />}
           </button>
         </div>
       </nav>

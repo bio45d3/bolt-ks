@@ -6,6 +6,29 @@ import { useRouter } from 'next/navigation';
 import { Navigation } from '@/components/Navigation';
 import { useAuth } from '@/lib/auth';
 
+// Icons
+const UserIcon = () => (
+  <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+    <circle cx="12" cy="8" r="4" />
+    <path d="M4 20c0-4 4-6 8-6s8 2 8 6" />
+  </svg>
+);
+
+const PackageIcon = () => (
+  <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+    <path d="M12 2L2 7l10 5 10-5-10-5z" />
+    <path d="M2 17l10 5 10-5" />
+    <path d="M2 12l10 5 10-5" />
+  </svg>
+);
+
+const LocationIcon = () => (
+  <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+    <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z" />
+    <circle cx="12" cy="9" r="2.5" />
+  </svg>
+);
+
 export default function AccountPage() {
   const router = useRouter();
   const { user, orders, isAuthenticated, logout, updateProfile } = useAuth();
@@ -125,7 +148,7 @@ export default function AccountPage() {
         {activeTab === 'overview' && (
           <>
             <div className="card light" style={{ gridColumn: 'span 4', padding: 30 }}>
-              <h3 style={{ fontWeight: 800, textTransform: 'uppercase', marginBottom: 20 }}>👤 Profile</h3>
+              <h3 style={{ fontWeight: 800, textTransform: 'uppercase', marginBottom: 20 }}>Profile</h3>
               <p style={{ color: '#666', marginBottom: 5 }}>{user.firstName} {user.lastName}</p>
               <p style={{ color: '#666', marginBottom: 15 }}>{user.email}</p>
               <button onClick={() => setActiveTab('profile')} style={{ color: 'var(--accent-orange)', background: 'none', border: 'none', fontWeight: 700, cursor: 'pointer' }}>
@@ -134,7 +157,7 @@ export default function AccountPage() {
             </div>
 
             <div className="card light" style={{ gridColumn: 'span 4', padding: 30 }}>
-              <h3 style={{ fontWeight: 800, textTransform: 'uppercase', marginBottom: 20 }}>📦 Recent Orders</h3>
+              <h3 style={{ fontWeight: 800, textTransform: 'uppercase', marginBottom: 20 }}>Recent Orders</h3>
               {orders.length === 0 ? (
                 <p style={{ color: '#666' }}>No orders yet</p>
               ) : (
@@ -146,7 +169,7 @@ export default function AccountPage() {
             </div>
 
             <div className="card light" style={{ gridColumn: 'span 4', padding: 30 }}>
-              <h3 style={{ fontWeight: 800, textTransform: 'uppercase', marginBottom: 20 }}>📍 Addresses</h3>
+              <h3 style={{ fontWeight: 800, textTransform: 'uppercase', marginBottom: 20 }}>Addresses</h3>
               {user.address ? (
                 <p style={{ color: '#666' }}>{user.address.city}, {user.address.country}</p>
               ) : (
@@ -185,7 +208,7 @@ export default function AccountPage() {
           <div style={{ gridColumn: 'span 12' }}>
             {orders.length === 0 ? (
               <div className="card light" style={{ padding: 60, textAlign: 'center' }}>
-                <div style={{ fontSize: '3rem', marginBottom: 20 }}>📦</div>
+                <div style={{ marginBottom: 20, color: '#888' }}><PackageIcon /></div>
                 <h2 style={{ fontWeight: 800, textTransform: 'uppercase', marginBottom: 15 }}>No Orders Yet</h2>
                 <p style={{ color: '#666', marginBottom: 30 }}>You haven&apos;t placed any orders yet. Start exploring our collection!</p>
                 <Link
@@ -358,7 +381,7 @@ export default function AccountPage() {
         {activeTab === 'addresses' && (
           <div style={{ gridColumn: 'span 12' }}>
             <div className="card light" style={{ padding: 40, textAlign: 'center' }}>
-              <div style={{ fontSize: '3rem', marginBottom: 20 }}>📍</div>
+              <div style={{ marginBottom: 20, color: '#888' }}><LocationIcon /></div>
               <h2 style={{ fontWeight: 800, textTransform: 'uppercase', marginBottom: 15 }}>No Saved Addresses</h2>
               <p style={{ color: '#666', marginBottom: 30 }}>Add an address to speed up your checkout process.</p>
               <button

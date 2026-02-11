@@ -4,6 +4,12 @@ import Link from 'next/link';
 import { useState } from 'react';
 import { Navigation } from '@/components/Navigation';
 
+const CheckIcon = () => (
+  <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--accent-orange)" strokeWidth="2">
+    <polyline points="20 6 9 17 4 12" />
+  </svg>
+);
+
 const faqs = [
   {
     question: 'What is the warranty period for Bang & Olufsen products?',
@@ -127,7 +133,7 @@ export default function SupportPage() {
 
             {submitted ? (
               <div style={{ textAlign: 'center', padding: 40 }}>
-                <div style={{ fontSize: '3rem', marginBottom: 15 }}>✓</div>
+                <div style={{ marginBottom: 15 }}><CheckIcon /></div>
                 <h3 style={{ fontWeight: 800, marginBottom: 10 }}>Message Sent!</h3>
                 <p style={{ color: '#888' }}>We&apos;ll get back to you within 24 hours.</p>
               </div>
