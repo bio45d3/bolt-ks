@@ -53,6 +53,16 @@ model Address {
 }
 
 // ============================================
+// BRANDS
+// ============================================
+
+enum Brand {
+  BANG_OLUFSEN
+  DEVIALET
+  LOEWE
+}
+
+// ============================================
 // PRODUCTS
 // ============================================
 
@@ -74,13 +84,18 @@ model Product {
   sku         String   @unique
   name        String
   slug        String   @unique
+  subtitle    String?
   description String?
+  longDescription String?
+  
+  brand       Brand    @default(BANG_OLUFSEN)
   
   categoryId  String
   category    Category @relation(fields: [categoryId], references: [id])
   
-  price       Decimal  @db.Decimal(10, 2)
+  price       Decimal? @db.Decimal(10, 2)  // Nullable = "Contact Us"
   compareAt   Decimal? @db.Decimal(10, 2)  // Original price for sales
+  contactOnly Boolean  @default(false)     // Force "Contact Us" even if price set
   
   images      String[] // Array of image URLs
   colors      Json?    // Array of { name, hex, image? }
@@ -95,8 +110,98 @@ model Product {
 
   cartItems   CartItem[]
   orderItems  OrderItem[]
+  campaignProducts CampaignProduct[]
 
   @@map("products")
+}
+
+// ============================================
+// CAMPAIGNS & PROMOTIONS
+// ============================================
+
+model Campaign {
+  id          String    @id @default(cuid())
+  name        String
+  slug        String    @unique
+  description String?
+  
+  discountType    DiscountType @default(PERCENTAGE)
+  discountValue   Decimal      @db.Decimal(10, 2)  // Percentage or fixed amount
+  
+  // Which brands this campaign applies to (empty = all)
+  brands      Brand[]
+  
+  // Date range
+  startDate   DateTime
+  endDate     DateTime
+  
+  // Display
+  bannerImage String?
+  bannerText  String?
+  active      Boolean   @default(true)
+  
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  
+  products    CampaignProduct[]
+
+  @@map("campaigns")
+}
+
+model CampaignProduct {
+  id          String   @id @default(cuid())
+  campaignId  String
+  campaign    Campaign @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+  productId   String
+  product     Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  
+  // Override campaign discount for specific product
+  customDiscount Decimal? @db.Decimal(10, 2)
+  
+  @@unique([campaignId, productId])
+  @@map("campaign_products")
+}
+
+enum DiscountType {
+  PERCENTAGE
+  FIXED
+}
+
+// ============================================
+// CONTACT ENQUIRIES
+// ============================================
+
+model Enquiry {
+  id          String   @id @default(cuid())
+  
+  // Contact info
+  name        String
+  email       String
+  phone       String?
+  
+  // Product interest (optional)
+  productId   String?
+  productName String?
+  
+  // Message
+  subject     String?
+  message     String
+  
+  // Status
+  status      EnquiryStatus @default(NEW)
+  notes       String?       // Internal notes
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("enquiries")
+}
+
+enum EnquiryStatus {
+  NEW
+  CONTACTED
+  QUOTED
+  CLOSED
 }
 
 // ============================================

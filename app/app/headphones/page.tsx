@@ -54,7 +54,7 @@ export default function HeadphonesPage() {
 
   return (
     <>
-      <Navigation activeLink="headphones" />
+      <Navigation activeLink="shop" />
 
       <main>
         {/* Page Header */}

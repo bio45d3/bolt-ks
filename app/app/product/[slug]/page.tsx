@@ -309,7 +309,7 @@ export default function ProductPage() {
 
   return (
     <>
-      <Navigation activeLink={product.category as 'speakers' | 'headphones' | 'televisions'} />
+      <Navigation activeLink="shop" />
 
       <main style={{ paddingTop: 100 }}>
         {/* Breadcrumb */}

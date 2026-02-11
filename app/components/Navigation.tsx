@@ -38,7 +38,7 @@ const CloseIcon = () => (
 );
 
 interface NavigationProps {
-  activeLink?: 'speakers' | 'headphones' | 'televisions' | 'support';
+  activeLink?: 'shop' | 'support';
 }
 
 export function Navigation({ activeLink }: NavigationProps) {
@@ -69,13 +69,14 @@ export function Navigation({ activeLink }: NavigationProps) {
   return (
     <>
       <nav className="site-nav">
-        <Link href="/" className="logo">BANG & OLUFSEN</Link>
+        <Link href="/" className="logo">BOLT KS</Link>
         
         {/* Desktop nav links */}
         <div className="nav-links desktop-nav">
-          <Link href="/speakers" style={linkStyle('speakers')}>Speakers</Link>
-          <Link href="/headphones" style={linkStyle('headphones')}>Headphones</Link>
-          <Link href="/televisions" style={linkStyle('televisions')}>Televisions</Link>
+          <Link href="/shop" style={linkStyle('shop')}>Shop</Link>
+          <Link href="/shop?brand=bang-olufsen">B&O</Link>
+          <Link href="/shop?brand=devialet">Devialet</Link>
+          <Link href="/shop?brand=loewe">Loewe</Link>
           <Link href="/support" style={linkStyle('support')}>Support</Link>
           <Link href="/cart" className="nav-cart nav-icon">
             <CartIcon />
@@ -111,9 +112,10 @@ export function Navigation({ activeLink }: NavigationProps) {
         <div className="mobile-menu-overlay">
           <div className="mobile-menu-links">
             <Link href="/" onClick={() => setMenuOpen(false)}>Home</Link>
-            <Link href="/speakers" onClick={() => setMenuOpen(false)}>Speakers</Link>
-            <Link href="/headphones" onClick={() => setMenuOpen(false)}>Headphones</Link>
-            <Link href="/televisions" onClick={() => setMenuOpen(false)}>Televisions</Link>
+            <Link href="/shop" onClick={() => setMenuOpen(false)}>Shop All</Link>
+            <Link href="/shop?brand=bang-olufsen" onClick={() => setMenuOpen(false)}>Bang & Olufsen</Link>
+            <Link href="/shop?brand=devialet" onClick={() => setMenuOpen(false)}>Devialet</Link>
+            <Link href="/shop?brand=loewe" onClick={() => setMenuOpen(false)}>Loewe</Link>
             <Link href="/support" onClick={() => setMenuOpen(false)}>Support</Link>
           </div>
           <div className="mobile-menu-actions">

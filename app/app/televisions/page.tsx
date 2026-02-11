@@ -57,7 +57,7 @@ export default function TelevisionsPage() {
 
   return (
     <>
-      <Navigation activeLink="televisions" />
+      <Navigation activeLink="shop" />
 
       <main>
         {/* Page Header */}

@@ -653,4 +653,26 @@ main {
     padding: 16px 30px !important;
     font-size: 0.9rem !important;
   }
+  
+  /* Shop grid responsive */
+  main > .card[style*="span 4"],
+  main > a[style*="span 4"] {
+    grid-column: span 6 !important;
+  }
+  
+  main > .card[style*="span 3"],
+  main > a[style*="span 3"] {
+    grid-column: span 6 !important;
+  }
+}
+
+@media (max-width: 600px) {
+  main > .card[style*="span 4"],
+  main > a[style*="span 4"],
+  main > .card[style*="span 3"],
+  main > a[style*="span 3"],
+  main > .card[style*="span 6"],
+  main > a[style*="span 6"] {
+    grid-column: span 12 !important;
+  }
 }

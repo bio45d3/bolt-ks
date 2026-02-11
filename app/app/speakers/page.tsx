@@ -72,7 +72,7 @@ export default function SpeakersPage() {
 
   return (
     <>
-      <Navigation activeLink="speakers" />
+      <Navigation activeLink="shop" />
 
       <main>
         {/* Page Header */}

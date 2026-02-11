@@ -4,15 +4,54 @@ import Link from 'next/link';
 import { Footer } from '@/components/Footer';
 import { Navigation } from '@/components/Navigation';
 
-function ArrowGraphic({ style = {} }: { style?: React.CSSProperties }) {
-  return (
-    <svg className="arrow-graphic" viewBox="0 0 20 60" style={style}>
-      <line x1="10" y1="0" x2="10" y2="55" />
-      <line x1="10" y1="55" x2="2" y2="45" />
-      <line x1="10" y1="55" x2="18" y2="45" />
-    </svg>
-  );
-}
+const brands = [
+  {
+    id: 'bang-olufsen',
+    name: 'Bang & Olufsen',
+    country: 'Denmark',
+    tagline: 'Exceptional sound. Timeless design.',
+    description: 'Since 1925, crafting audio experiences that define generations.',
+    color: '#000000',
+    featured: {
+      name: 'Beosound A9',
+      price: '$4,550',
+      image: 'https://images.unsplash.com/photo-1545454675-3531b543be5d?w=800&auto=format&fit=crop&q=60',
+    },
+  },
+  {
+    id: 'devialet',
+    name: 'Devialet',
+    country: 'France',
+    tagline: 'Engineering emotion.',
+    description: 'Parisian innovation pushing the boundaries of acoustic engineering.',
+    color: '#000000',
+    featured: {
+      name: 'Phantom I',
+      price: '$3,200',
+      image: 'https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?w=800&auto=format&fit=crop&q=60',
+    },
+  },
+  {
+    id: 'loewe',
+    name: 'Loewe',
+    country: 'Germany',
+    tagline: 'German engineering. Iconic design.',
+    description: 'Premium televisions and audio since 1923.',
+    color: '#000000',
+    featured: {
+      name: 'Stellar TV',
+      price: 'Contact Us',
+      image: 'https://images.unsplash.com/photo-1593359677879-a4bb92f829d1?w=800&auto=format&fit=crop&q=60',
+    },
+  },
+];
+
+const featuredProducts = [
+  { id: 'beosound-2', name: 'Beosound 2', brand: 'Bang & Olufsen', price: '$4,000', image: 'https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?w=600', category: 'Speakers' },
+  { id: 'phantom-ii', name: 'Phantom II', brand: 'Devialet', price: '$1,400', image: 'https://images.unsplash.com/photo-1545454675-3531b543be5d?w=600', category: 'Speakers' },
+  { id: 'beoplay-h95', name: 'Beoplay H95', brand: 'Bang & Olufsen', price: '$1,250', image: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=600', category: 'Headphones' },
+  { id: 'dione', name: 'Dione', brand: 'Devialet', price: '$2,490', image: 'https://images.unsplash.com/photo-1558089687-f282ffcbc126?w=600', category: 'Soundbars' },
+];
 
 export default function Home() {
   return (
@@ -20,141 +59,256 @@ export default function Home() {
       <Navigation />
 
       <main>
-        {/* Hero - Beolab 90 */}
-        <div className="card dark hero-span">
-          <div className="giant-letter">90</div>
-          <div className="hero-visual">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src="https://pngimg.com/uploads/loudspeaker/loudspeaker_PNG101569.png"
-              alt="Beolab 90"
-              className="hero-img"
-            />
-          </div>
-          <div className="hero-content" style={{ gridColumn: 1 }}>
-            <div className="label text-orange">Flagship Innovation</div>
-            <h1 className="overlay-text">
-              THE SHAPE<br />
-              OF SOUND<br />
-              <span className="text-orange">REDEFINED</span>
+        {/* Hero Section */}
+        <div className="card dark hero-span" style={{ minHeight: '80vh', position: 'relative', overflow: 'hidden' }}>
+          <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(135deg, #000 0%, #1a1a1a 100%)' }} />
+          <div style={{ position: 'relative', zIndex: 2, display: 'flex', flexDirection: 'column', justifyContent: 'center', height: '100%', padding: '60px' }}>
+            <div className="label text-orange" style={{ marginBottom: 20 }}>Authorized Retailer in Kosovo</div>
+            <h1 style={{ fontSize: 'clamp(3rem, 8vw, 6rem)', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '-0.03em', lineHeight: 0.9, marginBottom: 30 }}>
+              Premium<br />
+              Audio &<br />
+              <span className="text-orange">Television</span>
             </h1>
-          </div>
-          <div className="hero-content" style={{ gridColumn: 2, alignItems: 'flex-end', textAlign: 'right' }}>
-            <div className="price-tag">
-              <span className="label">MSRP</span><br />
-              $80,000.00
+            <p style={{ fontSize: '1.1rem', color: '#888', maxWidth: 500, marginBottom: 40, lineHeight: 1.6 }}>
+              Experience world-class sound and vision from Bang & Olufsen, Devialet, and Loewe. 
+              Curated for discerning audiophiles in Kosovo.
+            </p>
+            <div style={{ display: 'flex', gap: 15, flexWrap: 'wrap' }}>
+              <Link
+                href="/shop"
+                style={{
+                  padding: '20px 40px',
+                  background: 'var(--accent-orange)',
+                  color: 'white',
+                  textDecoration: 'none',
+                  fontWeight: 800,
+                  textTransform: 'uppercase',
+                  fontSize: '0.9rem',
+                }}
+              >
+                Shop Now
+              </Link>
+              <Link
+                href="/support"
+                style={{
+                  padding: '20px 40px',
+                  background: 'transparent',
+                  border: '1px solid #444',
+                  color: 'white',
+                  textDecoration: 'none',
+                  fontWeight: 800,
+                  textTransform: 'uppercase',
+                  fontSize: '0.9rem',
+                }}
+              >
+                Visit Showroom
+              </Link>
             </div>
-            <div className="desc-block">
-              In the years following its inception, the Beolab 90 has stood as the pinnacle of acoustic engineering. Active Room Compensation meets visionary design.
-            </div>
           </div>
+          {/* Decorative element */}
+          <div style={{ position: 'absolute', right: '-10%', top: '50%', transform: 'translateY(-50%)', width: '50%', height: '120%', background: 'var(--accent-orange)', opacity: 0.1, borderRadius: '50%', filter: 'blur(100px)' }} />
         </div>
 
-        {/* Beoplay A9 */}
-        <div className="card light product-span">
-          <div className="price-tag">$2,999.00</div>
-          <div className="orange-shape shape-rect" />
-          <div className="vertical-text">Active Noise Cancellation</div>
-          <h2 className="overlay-text" style={{ marginTop: 40 }}>
-            BEOPLAY<br />
-            <span className="text-orange">A9</span><br />
-            ORIGINAL
+        {/* Brand Selector Section */}
+        <div style={{ gridColumn: 'span 12', padding: '60px 0 30px' }}>
+          <div className="label text-orange" style={{ marginBottom: 10 }}>Our Brands</div>
+          <h2 style={{ fontSize: 'clamp(2rem, 4vw, 3rem)', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '-0.02em' }}>
+            Three Legends. One Destination.
           </h2>
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src="https://pngimg.com/d/wireless_speaker_PNG18.png"
-            alt="Beoplay A9"
-            className="product-img"
-          />
-          <div className="pill-container">
-            <div className="pill">
-              COVER
-              <div className="color-dot" style={{ background: '#ddd' }} />
-            </div>
-            <div className="pill">
-              LEGS
-              <div className="color-dot" style={{ background: '#8B4513' }} />
-            </div>
-          </div>
-          <ArrowGraphic />
         </div>
 
-        {/* Beoplay H95 */}
-        <div className="card dark product-span">
-          <div className="price-tag text-orange">$899.00</div>
-          <div style={{ position: 'absolute', top: 100, left: -20, fontSize: '10rem', opacity: 0.1, fontWeight: 900 }}>
-            H95
-          </div>
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src="https://pngimg.com/uploads/headphones/headphones_PNG7645.png"
-            alt="Beoplay H95"
-            className="product-img"
-            style={{ width: '70%' }}
-          />
-          <div style={{ zIndex: 3, padding: 30, marginTop: 'auto' }}>
-            <h2 style={{ fontSize: '2.5rem', marginBottom: 10 }}>BEOPLAY H95</h2>
-            <div className="desc-block" style={{ color: '#888' }}>
-              Ultimate over-ear headphones. Moving titanium drivers and lambskin memory foam.
+        {/* Brand Cards */}
+        {brands.map((brand, index) => (
+          <Link
+            key={brand.id}
+            href={`/shop?brand=${brand.id}`}
+            className={`card ${index === 1 ? 'dark' : 'light'}`}
+            style={{
+              gridColumn: 'span 4',
+              minHeight: 450,
+              textDecoration: 'none',
+              color: 'inherit',
+              display: 'flex',
+              flexDirection: 'column',
+              position: 'relative',
+              overflow: 'hidden',
+            }}
+          >
+            {/* Brand Image */}
+            <div style={{
+              height: 220,
+              background: index === 1 ? '#1a1a1a' : '#f5f5f5',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              overflow: 'hidden',
+            }}>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={brand.featured.image}
+                alt={brand.featured.name}
+                style={{ width: '100%', height: '100%', objectFit: 'cover', opacity: 0.8 }}
+              />
             </div>
-            <div className="pill-container" style={{ marginTop: 20 }}>
-              <div className="pill filled">ADD TO CART</div>
-            </div>
-          </div>
-        </div>
 
-        {/* Beolit 20 */}
-        <div className="card light product-span" style={{ backgroundColor: '#D4D4D4' }}>
-          <div className="price-tag">$549.00</div>
-          <div className="orange-shape shape-circle" style={{ backgroundColor: 'white' }} />
-          <div style={{ zIndex: 3, padding: 30, height: '100%', display: 'flex', flexDirection: 'column' }}>
-            <h2 className="overlay-text" style={{ color: 'black', fontSize: '2.5rem' }}>
-              PORTABLE<br />POWER
-            </h2>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src="https://pngimg.com/uploads/bluetooth_speaker/bluetooth_speaker_PNG36.png"
-              alt="Beolit 20"
-              className="product-img"
-              style={{ width: '55%', top: '60%' }}
-            />
-            <div style={{ marginTop: 'auto' }}>
-              <div className="label" style={{ marginBottom: 5 }}>BEOLIT 20</div>
-              <div className="desc-block">
-                Big sound for every moment. Long-lasting battery, integrated wireless Qi charging.
+            {/* Brand Info */}
+            <div style={{ padding: 25, flex: 1, display: 'flex', flexDirection: 'column' }}>
+              <div className="label" style={{ marginBottom: 5, color: index === 1 ? '#666' : '#888' }}>
+                {brand.country}
               </div>
-              <ArrowGraphic style={{ right: 'auto', left: 30, bottom: 10, height: 40, stroke: 'black' }} />
+              <h3 style={{
+                fontSize: '1.75rem',
+                fontWeight: 800,
+                textTransform: 'uppercase',
+                marginBottom: 10,
+                color: index === 1 ? 'white' : 'black',
+              }}>
+                {brand.name}
+              </h3>
+              <p style={{
+                fontSize: '0.9rem',
+                color: index === 1 ? '#888' : '#666',
+                lineHeight: 1.5,
+                marginBottom: 20,
+              }}>
+                {brand.tagline}
+              </p>
+              <div style={{
+                marginTop: 'auto',
+                color: 'var(--accent-orange)',
+                fontWeight: 700,
+                fontSize: '0.85rem',
+                textTransform: 'uppercase',
+              }}>
+                Explore {brand.name} →
+              </div>
             </div>
+          </Link>
+        ))}
+
+        {/* Featured Products Section */}
+        <div style={{ gridColumn: 'span 12', padding: '60px 0 30px' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', flexWrap: 'wrap', gap: 20 }}>
+            <div>
+              <div className="label text-orange" style={{ marginBottom: 10 }}>Featured</div>
+              <h2 style={{ fontSize: 'clamp(2rem, 4vw, 3rem)', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '-0.02em' }}>
+                Popular Products
+              </h2>
+            </div>
+            <Link
+              href="/shop"
+              style={{
+                color: 'var(--accent-orange)',
+                textDecoration: 'none',
+                fontWeight: 700,
+                fontSize: '0.9rem',
+                textTransform: 'uppercase',
+              }}
+            >
+              View All Products →
+            </Link>
           </div>
+        </div>
+
+        {/* Product Grid */}
+        {featuredProducts.map((product) => (
+          <Link
+            key={product.id}
+            href={`/product/${product.id}`}
+            className="card light"
+            style={{
+              gridColumn: 'span 3',
+              padding: 0,
+              textDecoration: 'none',
+              color: 'inherit',
+              overflow: 'hidden',
+            }}
+          >
+            <div style={{
+              height: 200,
+              background: '#f5f5f5',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={product.image}
+                alt={product.name}
+                style={{ maxWidth: '80%', maxHeight: '80%', objectFit: 'contain' }}
+              />
+            </div>
+            <div style={{ padding: 20 }}>
+              <div className="label" style={{ marginBottom: 5, color: '#888', fontSize: '0.7rem' }}>
+                {product.brand} • {product.category}
+              </div>
+              <h3 style={{ fontSize: '1.1rem', fontWeight: 800, marginBottom: 8, textTransform: 'uppercase' }}>
+                {product.name}
+              </h3>
+              <div style={{ fontWeight: 800, color: product.price === 'Contact Us' ? 'var(--accent-orange)' : 'inherit' }}>
+                {product.price}
+              </div>
+            </div>
+          </Link>
+        ))}
+
+        {/* CTA Banner */}
+        <div className="card dark" style={{ gridColumn: 'span 12', padding: 'clamp(40px, 6vw, 80px)', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 30, marginTop: 20 }}>
+          <div style={{ flex: 1, minWidth: 280 }}>
+            <div className="label text-orange" style={{ marginBottom: 10 }}>Experience in Person</div>
+            <h2 style={{ fontSize: 'clamp(1.5rem, 3vw, 2.5rem)', fontWeight: 800, textTransform: 'uppercase', lineHeight: 1.1 }}>
+              Visit Our<br />Pristina Showroom
+            </h2>
+            <p style={{ marginTop: 15, color: '#888', maxWidth: 400 }}>
+              See, hear, and feel the difference. Our experts will help you find the perfect audio solution.
+            </p>
+          </div>
+          <Link
+            href="/support"
+            style={{
+              padding: '20px 40px',
+              background: 'var(--accent-orange)',
+              color: 'white',
+              textDecoration: 'none',
+              fontWeight: 800,
+              textTransform: 'uppercase',
+              fontSize: '0.9rem',
+            }}
+          >
+            Get Directions
+          </Link>
         </div>
 
         {/* Newsletter */}
-        <div className="card dark" style={{ gridColumn: 'span 12', padding: 60, flexDirection: 'row', alignItems: 'center', borderRadius: 'var(--radius)' }}>
-          <div style={{ flex: 1 }}>
-            <div className="label text-orange">NEWSLETTER</div>
-            <h2 style={{ fontSize: '4vw', marginTop: 20 }}>JOIN THE<br />AUDIOPHILE CLUB</h2>
+        <div className="card light" style={{ gridColumn: 'span 12', padding: 'clamp(40px, 6vw, 60px)', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 30 }}>
+          <div style={{ flex: 1, minWidth: 280 }}>
+            <div className="label text-orange">Newsletter</div>
+            <h2 style={{ fontSize: 'clamp(1.5rem, 3vw, 2.5rem)', fontWeight: 800, textTransform: 'uppercase', marginTop: 10 }}>
+              Stay Updated
+            </h2>
+            <p style={{ marginTop: 10, color: '#666' }}>
+              New arrivals, exclusive offers, and audio insights.
+            </p>
           </div>
-          <div style={{ flex: 1, display: 'flex', gap: 20, alignItems: 'center', justifyContent: 'flex-end' }}>
+          <div style={{ display: 'flex', gap: 15, flexWrap: 'wrap' }}>
             <input
               type="email"
-              placeholder="ENTER EMAIL"
+              placeholder="Your email"
               style={{
-                background: 'transparent',
-                border: '1px solid #333',
-                padding: 20,
-                color: 'white',
-                width: 300,
-                fontFamily: 'monospace',
-                textTransform: 'uppercase'
+                padding: '18px 20px',
+                border: '1px solid #ddd',
+                width: 280,
+                fontSize: '1rem',
               }}
             />
             <button style={{
               background: 'var(--accent-orange)',
               border: 'none',
-              padding: '20px 40px',
+              padding: '18px 35px',
               fontWeight: 800,
               textTransform: 'uppercase',
-              cursor: 'pointer'
+              cursor: 'pointer',
+              color: 'white',
             }}>
               Subscribe
             </button>

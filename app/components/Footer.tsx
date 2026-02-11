@@ -42,10 +42,10 @@ export function Footer() {
         {/* Brand */}
         <div>
           <div style={{ fontWeight: 900, fontSize: '1.25rem', marginBottom: 20, letterSpacing: '-0.05em' }}>
-            BANG & OLUFSEN
+            BOLT KS
           </div>
           <p style={{ color: '#888', fontSize: '0.9rem', lineHeight: 1.6, marginBottom: 20 }}>
-            Premium audio and video products crafted with exceptional sound quality and timeless Danish design.
+            Authorized retailer of premium audio and television brands in Kosovo. Bang & Olufsen, Devialet, and Loewe.
           </p>
           <div style={{ display: 'flex', gap: 15, alignItems: 'center' }}>
             <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" style={{ color: '#888', display: 'flex' }}><InstagramIcon /></a>
@@ -55,16 +55,16 @@ export function Footer() {
           </div>
         </div>
 
-        {/* Products */}
+        {/* Brands */}
         <div>
           <div style={{ fontWeight: 700, fontSize: '0.85rem', textTransform: 'uppercase', marginBottom: 20, color: 'var(--accent-orange)' }}>
-            Products
+            Our Brands
           </div>
           <nav style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-            <Link href="/speakers" style={{ color: '#888', textDecoration: 'none', fontSize: '0.9rem' }}>Speakers</Link>
-            <Link href="/headphones" style={{ color: '#888', textDecoration: 'none', fontSize: '0.9rem' }}>Headphones</Link>
-            <Link href="/televisions" style={{ color: '#888', textDecoration: 'none', fontSize: '0.9rem' }}>Televisions</Link>
-            <Link href="/speakers" style={{ color: '#888', textDecoration: 'none', fontSize: '0.9rem' }}>Accessories</Link>
+            <Link href="/shop?brand=bang-olufsen" style={{ color: '#888', textDecoration: 'none', fontSize: '0.9rem' }}>Bang & Olufsen</Link>
+            <Link href="/shop?brand=devialet" style={{ color: '#888', textDecoration: 'none', fontSize: '0.9rem' }}>Devialet</Link>
+            <Link href="/shop?brand=loewe" style={{ color: '#888', textDecoration: 'none', fontSize: '0.9rem' }}>Loewe</Link>
+            <Link href="/shop" style={{ color: '#888', textDecoration: 'none', fontSize: '0.9rem' }}>All Products</Link>
           </nav>
         </div>
 
