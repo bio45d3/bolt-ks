@@ -98,10 +98,38 @@ export default function ProductPage() {
       <>
         <Navigation />
         <main>
-          <div className="card dark" style={{ gridColumn: 'span 12', height: '50vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-            <div style={{ fontSize: '2rem', marginBottom: 20 }}>⏳</div>
-            <p style={{ color: '#888' }}>Loading product...</p>
+          <div className="card dark" style={{ gridColumn: 'span 12', height: '60vh', minHeight: 400, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', position: 'relative', overflow: 'hidden' }}>
+            <div style={{ 
+              position: 'absolute', 
+              top: '50%', 
+              left: '50%', 
+              transform: 'translate(-50%, -50%)', 
+              fontSize: 'clamp(6rem, 15vw, 12rem)', 
+              fontWeight: 900, 
+              color: 'var(--accent-orange)', 
+              opacity: 0.15, 
+              pointerEvents: 'none',
+            }}>
+              BOLD
+            </div>
+            <div style={{ position: 'relative', zIndex: 2 }}>
+              <div style={{ 
+                width: 40, 
+                height: 40, 
+                border: '3px solid #333',
+                borderTopColor: 'var(--accent-orange)',
+                borderRadius: '50%',
+                animation: 'spin 0.8s linear infinite',
+                margin: '0 auto 25px',
+              }} />
+              <p style={{ color: '#888', fontFamily: 'monospace', textTransform: 'uppercase', letterSpacing: '0.1em' }}>Loading</p>
+            </div>
           </div>
+          <style>{`
+            @keyframes spin {
+              to { transform: rotate(360deg); }
+            }
+          `}</style>
         </main>
         <Footer />
       </>

@@ -42,7 +42,7 @@ export function Footer() {
         {/* Brand */}
         <div>
           <div style={{ fontWeight: 900, fontSize: '1.25rem', marginBottom: 20, letterSpacing: '-0.05em' }}>
-            BOLT KS
+            BOLD
           </div>
           <p style={{ color: '#888', fontSize: '0.9rem', lineHeight: 1.6, marginBottom: 20 }}>
             Authorized retailer of premium audio and television brands in Kosovo. Bang & Olufsen, Devialet, and Loewe.
@@ -87,7 +87,7 @@ export function Footer() {
             Visit Us
           </div>
           <address style={{ fontStyle: 'normal', color: '#888', fontSize: '0.9rem', lineHeight: 1.8 }}>
-            <strong style={{ color: 'white' }}>Bolt KS</strong><br />
+            <strong style={{ color: 'white' }}>BOLD</strong><br />
             Rr. Agim Ramadani 15<br />
             10000 Pristina, Kosovo<br /><br />
             <a href="tel:+38344123456" style={{ color: '#888', textDecoration: 'none' }}>+383 44 123 456</a><br />
@@ -107,7 +107,7 @@ export function Footer() {
         margin: '0 auto',
       }}>
         <div style={{ color: '#666', fontSize: '0.85rem' }}>
-          © {new Date().getFullYear()} Bolt KS. All rights reserved. Authorized Bang & Olufsen retailer.
+          © {new Date().getFullYear()} BOLD. All rights reserved. Authorized Bang & Olufsen retailer.
         </div>
         <div style={{ display: 'flex', gap: 25 }}>
           <Link href="/privacy" style={{ color: '#666', textDecoration: 'none', fontSize: '0.85rem' }}>Privacy Policy</Link>
