@@ -219,9 +219,33 @@ function ShopContent() {
 
         {/* Loading State */}
         {loading && (
-          <div className="card light" style={{ gridColumn: 'span 12', textAlign: 'center', padding: 80 }}>
-            <div style={{ fontSize: '2rem', marginBottom: 20 }}>⏳</div>
-            <p style={{ color: '#666' }}>Loading products...</p>
+          <div className="card dark" style={{ gridColumn: 'span 12', textAlign: 'center', padding: 100, position: 'relative', overflow: 'hidden' }}>
+            <div style={{ 
+              position: 'absolute', 
+              top: '50%', 
+              left: '50%', 
+              transform: 'translate(-50%, -50%)', 
+              fontSize: 'clamp(6rem, 15vw, 12rem)', 
+              fontWeight: 900, 
+              color: 'var(--accent-orange)', 
+              opacity: 0.15, 
+              pointerEvents: 'none',
+              animation: 'pulse 2s ease-in-out infinite',
+            }}>
+              BOLD
+            </div>
+            <div style={{ position: 'relative', zIndex: 2 }}>
+              <div style={{ 
+                width: 40, 
+                height: 40, 
+                border: '3px solid #333',
+                borderTopColor: 'var(--accent-orange)',
+                borderRadius: '50%',
+                animation: 'spin 0.8s linear infinite',
+                margin: '0 auto 25px',
+              }} />
+              <p style={{ color: '#888', fontFamily: 'monospace', textTransform: 'uppercase', letterSpacing: '0.1em' }}>Loading</p>
+            </div>
           </div>
         )}
 
@@ -412,10 +436,14 @@ function ShopContent() {
         </div>
       </main>
 
-      {/* Spinner animation */}
+      {/* Animations */}
       <style jsx>{`
         @keyframes spin {
           to { transform: rotate(360deg); }
+        }
+        @keyframes pulse {
+          0%, 100% { opacity: 0.1; transform: translate(-50%, -50%) scale(1); }
+          50% { opacity: 0.2; transform: translate(-50%, -50%) scale(1.05); }
         }
       `}</style>
 
