@@ -32,10 +32,9 @@ export default function Home() {
           <div className="hero-visual">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              src="https://assets.bang-olufsen.com/images/11188/beolab-90-white-hero.png"
+              src="https://pngimg.com/uploads/loudspeaker/loudspeaker_PNG101569.png"
               alt="Beolab 90"
               className="hero-img"
-              onError={(e) => { e.currentTarget.src = 'https://pngimg.com/uploads/loudspeaker/loudspeaker_PNG101569.png'; }}
             />
           </div>
           <div className="hero-content" style={{ gridColumn: 1 }}>
@@ -69,10 +68,9 @@ export default function Home() {
           </h2>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            src="https://images.ctfassets.net/8cd2csgvqd3m/4S2x8J1v3eG4k4A0K4uWq/1d9b3e1b7b8e1b3e1b7b8e1b3e1b7b8e/Beoplay_A9_4th_Gen_White_Hero.png"
+            src="https://pngimg.com/d/wireless_speaker_PNG18.png"
             alt="Beoplay A9"
             className="product-img"
-            onError={(e) => { e.currentTarget.src = 'https://pngimg.com/d/wireless_speaker_PNG18.png'; }}
           />
           <div className="pill-container">
             <div className="pill">
@@ -95,11 +93,10 @@ export default function Home() {
           </div>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            src="https://images.ctfassets.net/8cd2csgvqd3m/5s4x8J1v3eG4k4A0K4uWq/1d9b3e1b7b8e1b3e1b7b8e1b3e1b7b8e/Beoplay_H95_Black_Hero.png"
+            src="https://pngimg.com/uploads/headphones/headphones_PNG7645.png"
             alt="Beoplay H95"
             className="product-img"
             style={{ width: '70%' }}
-            onError={(e) => { e.currentTarget.src = 'https://pngimg.com/uploads/headphones/headphones_PNG7645.png'; }}
           />
           <div style={{ zIndex: 3, padding: 30, marginTop: 'auto' }}>
             <h2 style={{ fontSize: '2.5rem', marginBottom: 10 }}>BEOPLAY H95</h2>
@@ -122,11 +119,10 @@ export default function Home() {
             </h2>
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              src="https://images.ctfassets.net/8cd2csgvqd3m/1s4x8J1v3eG4k4A0K4uWq/1d9b3e1b7b8e1b3e1b7b8e1b3e1b7b8e/Beolit_20_Grey_Mist_Hero.png"
+              src="https://pngimg.com/uploads/bluetooth_speaker/bluetooth_speaker_PNG36.png"
               alt="Beolit 20"
               className="product-img"
               style={{ width: '55%', top: '60%' }}
-              onError={(e) => { e.currentTarget.src = 'https://pngimg.com/uploads/bluetooth_speaker/bluetooth_speaker_PNG36.png'; }}
             />
             <div style={{ marginTop: 'auto' }}>
               <div className="label" style={{ marginBottom: 5 }}>BEOLIT 20</div>
