@@ -99,6 +99,66 @@ const products: Record<string, {
     ],
     category: 'speakers',
   },
+  'beovision-harmony': {
+    name: 'Beovision Harmony',
+    subtitle: '77" OLED TV',
+    price: '$18,590.00',
+    image: 'https://pngimg.com/uploads/tv/tv_PNG39244.png',
+    description: 'OLED TV with motorized oak & aluminium stand',
+    longDescription: 'Beovision Harmony is a masterpiece of design and technology. The 77" OLED display delivers stunning picture quality, while the motorized oak and aluminium stand creates a theatrical reveal. Integrated sound system with Dolby Atmos for an immersive experience.',
+    colors: [
+      { name: 'Oak/Aluminium', hex: '#8B4513' },
+      { name: 'Grey/Aluminium', hex: '#C0C0C0' },
+    ],
+    specs: [
+      { label: 'Screen Size', value: '77 inches' },
+      { label: 'Resolution', value: '4K OLED' },
+      { label: 'Sound', value: 'Integrated soundbar' },
+      { label: 'Stand', value: 'Motorized' },
+      { label: 'HDR', value: 'Dolby Vision, HDR10' },
+    ],
+    category: 'televisions',
+  },
+  'beovision-contour': {
+    name: 'Beovision Contour',
+    subtitle: '55" OLED All-in-One',
+    price: '$7,990.00',
+    image: 'https://pngimg.com/uploads/tv/tv_PNG39233.png',
+    description: 'OLED TV with integrated soundbar',
+    longDescription: 'Beovision Contour combines a stunning 55" OLED display with a powerful integrated soundbar. The slim profile and premium materials make it a beautiful addition to any room, while delivering exceptional picture and sound quality.',
+    colors: [
+      { name: 'Aluminium', hex: '#C0C0C0' },
+      { name: 'Black', hex: '#000000' },
+    ],
+    specs: [
+      { label: 'Screen Size', value: '55 inches' },
+      { label: 'Resolution', value: '4K OLED' },
+      { label: 'Sound', value: '450W integrated' },
+      { label: 'Speakers', value: '11 drivers' },
+      { label: 'Smart TV', value: 'webOS' },
+    ],
+    category: 'televisions',
+  },
+  'beovision-theatre': {
+    name: 'Beovision Theatre',
+    subtitle: '83" 8K OLED Cinema',
+    price: '$24,990.00',
+    image: 'https://pngimg.com/uploads/tv/tv_PNG39252.png',
+    description: '8K OLED with Dolby Atmos soundbar',
+    longDescription: 'Beovision Theatre delivers the ultimate home cinema experience. The massive 83" 8K OLED display provides breathtaking detail, while the integrated Dolby Atmos soundbar creates an immersive 3D sound field. Perfect for movie enthusiasts.',
+    colors: [
+      { name: 'Anthracite', hex: '#2F2F2F' },
+      { name: 'Aluminium', hex: '#C0C0C0' },
+    ],
+    specs: [
+      { label: 'Screen Size', value: '83 inches' },
+      { label: 'Resolution', value: '8K OLED' },
+      { label: 'Sound', value: 'Dolby Atmos' },
+      { label: 'Soundbar', value: 'Integrated 12ch' },
+      { label: 'HDMI', value: '4x HDMI 2.1' },
+    ],
+    category: 'televisions',
+  },
 };
 
 function ColorDot({ color, selected, onClick }: { color: string; selected: boolean; onClick: () => void }) {
@@ -158,6 +218,8 @@ export default function ProductPage() {
         <Link href="/" className="logo">BANG & OLUFSEN</Link>
         <div className="nav-links">
           <Link href="/speakers" style={{ color: product.category === 'speakers' ? 'var(--accent-orange)' : 'white' }}>Speakers</Link>
+          <Link href="/headphones" style={{ color: product.category === 'headphones' ? 'var(--accent-orange)' : 'white' }}>Headphones</Link>
+          <Link href="/televisions" style={{ color: product.category === 'televisions' ? 'var(--accent-orange)' : 'white' }}>Televisions</Link>
           <Link href="/headphones" style={{ color: product.category === 'headphones' ? 'var(--accent-orange)' : 'white' }}>Headphones</Link>
           <Link href="/televisions">Televisions</Link>
           <Link href="/support">Support</Link>
