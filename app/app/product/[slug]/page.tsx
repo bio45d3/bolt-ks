@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import { useState } from 'react';
+import { Navigation } from '@/components/Navigation';
 import { useCart } from '@/lib/cart';
 import { useToast } from '@/components/Toast';
 
@@ -217,17 +218,7 @@ export default function ProductPage() {
 
   return (
     <>
-      <nav>
-        <Link href="/" className="logo">BANG & OLUFSEN</Link>
-        <div className="nav-links">
-          <Link href="/speakers" style={{ color: product.category === 'speakers' ? 'var(--accent-orange)' : 'white' }}>Speakers</Link>
-          <Link href="/headphones" style={{ color: product.category === 'headphones' ? 'var(--accent-orange)' : 'white' }}>Headphones</Link>
-          <Link href="/televisions" style={{ color: product.category === 'televisions' ? 'var(--accent-orange)' : 'white' }}>Televisions</Link>
-          <Link href="/headphones" style={{ color: product.category === 'headphones' ? 'var(--accent-orange)' : 'white' }}>Headphones</Link>
-          <Link href="/televisions">Televisions</Link>
-          <Link href="/support">Support</Link>
-        </div>
-      </nav>
+      <Navigation activeLink={product.category as 'speakers' | 'headphones' | 'televisions'} />
 
       <main style={{ paddingTop: 120 }}>
         {/* Breadcrumb */}

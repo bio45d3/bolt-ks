@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { useCart } from '@/lib/cart';
 import { useEffect, useState } from 'react';
+import { Navigation } from '@/components/Navigation';
 import { useRouter } from 'next/navigation';
 
 export default function CheckoutPage() {
@@ -74,15 +75,7 @@ export default function CheckoutPage() {
 
   return (
     <>
-      <nav>
-        <Link href="/" className="logo">BANG & OLUFSEN</Link>
-        <div className="nav-links">
-          <Link href="/speakers">Speakers</Link>
-          <Link href="/headphones">Headphones</Link>
-          <Link href="/televisions">Televisions</Link>
-          <Link href="/support">Support</Link>
-        </div>
-      </nav>
+      <Navigation />
 
       <main style={{ paddingTop: 120 }}>
         {/* Breadcrumb */}

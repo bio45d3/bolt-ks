@@ -1,4 +1,5 @@
 'use client';
+import { Navigation } from '@/components/Navigation';
 
 import Link from 'next/link';
 
@@ -80,15 +81,7 @@ export default function SpeakersPage() {
 
   return (
     <>
-      <nav>
-        <Link href="/" className="logo">BANG & OLUFSEN</Link>
-        <div className="nav-links">
-          <Link href="/speakers" style={{ color: 'var(--accent-orange)' }}>Speakers</Link>
-          <Link href="/headphones">Headphones</Link>
-          <Link href="/televisions">Televisions</Link>
-          <Link href="/support">Support</Link>
-        </div>
-      </nav>
+      <Navigation activeLink="speakers" />
 
       <main>
         {/* Page Header */}

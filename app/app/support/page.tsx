@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { useState } from 'react';
+import { Navigation } from '@/components/Navigation';
 
 const faqs = [
   {
@@ -59,15 +60,7 @@ export default function SupportPage() {
 
   return (
     <>
-      <nav>
-        <Link href="/" className="logo">BANG & OLUFSEN</Link>
-        <div className="nav-links">
-          <Link href="/speakers">Speakers</Link>
-          <Link href="/headphones">Headphones</Link>
-          <Link href="/televisions">Televisions</Link>
-          <Link href="/support" style={{ color: 'var(--accent-orange)' }}>Support</Link>
-        </div>
-      </nav>
+      <Navigation activeLink="support" />
 
       <main>
         {/* Page Header */}

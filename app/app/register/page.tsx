@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { Navigation } from '@/components/Navigation';
 import { useAuth } from '@/lib/auth';
 
 export default function RegisterPage() {
@@ -67,15 +68,7 @@ export default function RegisterPage() {
 
   return (
     <>
-      <nav>
-        <Link href="/" className="logo">BANG & OLUFSEN</Link>
-        <div className="nav-links">
-          <Link href="/speakers">Speakers</Link>
-          <Link href="/headphones">Headphones</Link>
-          <Link href="/televisions">Televisions</Link>
-          <Link href="/support">Support</Link>
-        </div>
-      </nav>
+      <Navigation />
 
       <main style={{ paddingTop: 120, display: 'flex', justifyContent: 'center' }}>
         <div style={{ gridColumn: 'span 12', maxWidth: 480, width: '100%' }}>

@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { Footer } from '@/components/Footer';
+import { Navigation } from '@/components/Navigation';
 
 function ArrowGraphic({ style = {} }: { style?: React.CSSProperties }) {
   return (
@@ -16,15 +17,7 @@ function ArrowGraphic({ style = {} }: { style?: React.CSSProperties }) {
 export default function Home() {
   return (
     <>
-      <nav>
-        <div className="logo">BANG & OLUFSEN</div>
-        <div className="nav-links">
-          <Link href="/speakers">Speakers</Link>
-          <Link href="/headphones">Headphones</Link>
-          <Link href="/televisions">Televisions</Link>
-          <Link href="/support">Support</Link>
-        </div>
-      </nav>
+      <Navigation />
 
       <main>
         {/* Hero - Beolab 90 */}

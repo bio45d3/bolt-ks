@@ -31,25 +31,13 @@ export function MobileNav() {
   return (
     <>
       {/* Mobile Nav Bar */}
-      <nav className="mobile-nav" style={{
-        display: 'none',
-        position: 'fixed',
-        top: 0,
-        left: 0,
-        right: 0,
-        zIndex: 100,
-        padding: '15px 20px',
-        background: 'rgba(0,0,0,0.9)',
-        backdropFilter: 'blur(10px)',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-      }}>
+      <nav className="mobile-nav">
         <Link href="/" style={{ fontWeight: 900, fontSize: '1.1rem', color: 'white', textDecoration: 'none', letterSpacing: '-0.05em' }}>
           B&O
         </Link>
         
         <div style={{ display: 'flex', alignItems: 'center', gap: 15 }}>
-          <Link href="/cart" style={{ color: 'white', textDecoration: 'none', position: 'relative' }}>
+          <Link href="/cart" style={{ color: 'white', textDecoration: 'none', position: 'relative', fontSize: '1.2rem' }}>
             🛒
             {totalItems > 0 && (
               <span style={{
@@ -72,6 +60,10 @@ export function MobileNav() {
             )}
           </Link>
           
+          <Link href={mounted && isAuthenticated ? '/account' : '/login'} style={{ color: 'white', textDecoration: 'none', fontSize: '1.2rem' }}>
+            👤
+          </Link>
+          
           <button
             onClick={() => setIsOpen(!isOpen)}
             style={{
@@ -82,6 +74,7 @@ export function MobileNav() {
               cursor: 'pointer',
               padding: 5,
             }}
+            aria-label="Toggle menu"
           >
             {isOpen ? '✕' : '☰'}
           </button>
@@ -126,7 +119,7 @@ export function MobileNav() {
             ))}
           </nav>
 
-          <div style={{ padding: 20, marginTop: 'auto' }}>
+          <div style={{ padding: 20, marginTop: 'auto', marginBottom: 40 }}>
             <Link
               href={mounted && isAuthenticated ? '/account' : '/login'}
               onClick={() => setIsOpen(false)}
@@ -140,6 +133,7 @@ export function MobileNav() {
                 fontWeight: 800,
                 textTransform: 'uppercase',
                 marginBottom: 10,
+                borderRadius: 8,
               }}
             >
               {mounted && isAuthenticated ? `Account (${user?.firstName || 'User'})` : 'Sign In'}
@@ -157,6 +151,7 @@ export function MobileNav() {
                 textAlign: 'center',
                 fontWeight: 800,
                 textTransform: 'uppercase',
+                borderRadius: 8,
               }}
             >
               Cart ({totalItems})
@@ -164,20 +159,6 @@ export function MobileNav() {
           </div>
         </div>
       )}
-
-      <style jsx global>{`
-        @media (max-width: 900px) {
-          nav:not(.mobile-nav) {
-            display: none !important;
-          }
-          .mobile-nav {
-            display: flex !important;
-          }
-          main {
-            padding-top: 80px !important;
-          }
-        }
-      `}</style>
     </>
   );
 }

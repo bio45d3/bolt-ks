@@ -2,72 +2,68 @@
 
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { useAuth } from '@/lib/auth';
 
-// Mock data for demo (would come from database in production)
-const mockStats = {
-  totalOrders: 156,
-  totalRevenue: 287450,
-  totalProducts: 24,
-  totalUsers: 89,
-  recentOrders: [
-    { id: 'BO-12345678', customer: 'John Doe', total: 2999, status: 'processing', date: '2024-02-11' },
-    { id: 'BO-12345677', customer: 'Jane Smith', total: 899, status: 'shipped', date: '2024-02-10' },
-    { id: 'BO-12345676', customer: 'Bob Wilson', total: 18590, status: 'delivered', date: '2024-02-09' },
-    { id: 'BO-12345675', customer: 'Alice Brown', total: 549, status: 'processing', date: '2024-02-09' },
-  ],
-  topProducts: [
-    { name: 'Beoplay H95', sold: 45, revenue: 40455 },
-    { name: 'Beoplay A9', sold: 23, revenue: 68977 },
-    { name: 'Beolit 20', sold: 67, revenue: 36783 },
-    { name: 'Beovision Harmony', sold: 8, revenue: 148720 },
-  ],
-};
+interface Stats {
+  totalOrders: number;
+  totalRevenue: number;
+  totalProducts: number;
+  totalUsers: number;
+  recentOrders: Array<{
+    id: string;
+    customer: string;
+    total: number;
+    status: string;
+    date: string;
+  }>;
+  topProducts: Array<{
+    name: string;
+    sold: number;
+    revenue: number;
+  }>;
+}
 
 export default function AdminDashboard() {
-  const router = useRouter();
-  const { isAuthenticated } = useAuth();
-  const [mounted, setMounted] = useState(false);
+  const [stats, setStats] = useState<Stats | null>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    setMounted(true);
+    fetch('/api/admin/stats')
+      .then((res) => res.json())
+      .then((data) => {
+        setStats(data);
+        setLoading(false);
+      })
+      .catch(() => setLoading(false));
   }, []);
-
-  // For demo, allow access. In production, check for admin role
-  // if (mounted && !isAuthenticated) {
-  //   router.push('/login');
-  //   return null;
-  // }
-
-  if (!mounted) {
-    return <div style={{ padding: 100, textAlign: 'center' }}>Loading...</div>;
-  }
 
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'delivered': return '#4CAF50';
       case 'shipped': return '#2196F3';
       case 'processing': return 'var(--accent-orange)';
+      case 'confirmed': return '#9C27B0';
       case 'cancelled': return '#f44336';
+      case 'pending': return '#FF9800';
       default: return '#888';
     }
   };
 
+  if (loading) {
+    return (
+      <>
+        <AdminNav />
+        <main style={{ paddingTop: 120, background: '#f5f5f5', minHeight: '100vh' }}>
+          <div style={{ gridColumn: 'span 12', textAlign: 'center', padding: 100 }}>
+            Loading...
+          </div>
+        </main>
+      </>
+    );
+  }
+
   return (
     <>
-      {/* Admin Nav */}
-      <nav style={{ background: '#000', mixBlendMode: 'normal' }}>
-        <Link href="/" className="logo" style={{ color: 'white' }}>BANG & OLUFSEN</Link>
-        <div className="nav-links">
-          <Link href="/admin" style={{ color: 'var(--accent-orange)' }}>Dashboard</Link>
-          <Link href="/admin/products">Products</Link>
-          <Link href="/admin/orders">Orders</Link>
-          <Link href="/admin/users">Users</Link>
-          <Link href="/" style={{ marginLeft: 20 }}>← Back to Store</Link>
-        </div>
-      </nav>
-
+      <AdminNav />
       <main style={{ paddingTop: 120, background: '#f5f5f5', minHeight: '100vh' }}>
         {/* Header */}
         <div style={{ gridColumn: 'span 12', marginBottom: 30 }}>
@@ -80,28 +76,24 @@ export default function AdminDashboard() {
         {/* Stats Cards */}
         <div className="card dark" style={{ gridColumn: 'span 3', padding: 30 }}>
           <div className="label" style={{ color: '#888', marginBottom: 10 }}>Total Orders</div>
-          <div style={{ fontSize: '3rem', fontWeight: 800 }}>{mockStats.totalOrders}</div>
-          <div style={{ color: '#4CAF50', fontSize: '0.9rem', marginTop: 5 }}>↑ 12% this month</div>
+          <div style={{ fontSize: '3rem', fontWeight: 800 }}>{stats?.totalOrders || 0}</div>
         </div>
 
         <div className="card dark" style={{ gridColumn: 'span 3', padding: 30 }}>
           <div className="label" style={{ color: '#888', marginBottom: 10 }}>Total Revenue</div>
           <div style={{ fontSize: '3rem', fontWeight: 800, color: 'var(--accent-orange)' }}>
-            ${mockStats.totalRevenue.toLocaleString()}
+            €{(stats?.totalRevenue || 0).toLocaleString()}
           </div>
-          <div style={{ color: '#4CAF50', fontSize: '0.9rem', marginTop: 5 }}>↑ 8% this month</div>
         </div>
 
         <div className="card dark" style={{ gridColumn: 'span 3', padding: 30 }}>
           <div className="label" style={{ color: '#888', marginBottom: 10 }}>Products</div>
-          <div style={{ fontSize: '3rem', fontWeight: 800 }}>{mockStats.totalProducts}</div>
-          <div style={{ color: '#888', fontSize: '0.9rem', marginTop: 5 }}>Active in catalog</div>
+          <div style={{ fontSize: '3rem', fontWeight: 800 }}>{stats?.totalProducts || 0}</div>
         </div>
 
         <div className="card dark" style={{ gridColumn: 'span 3', padding: 30 }}>
           <div className="label" style={{ color: '#888', marginBottom: 10 }}>Users</div>
-          <div style={{ fontSize: '3rem', fontWeight: 800 }}>{mockStats.totalUsers}</div>
-          <div style={{ color: '#4CAF50', fontSize: '0.9rem', marginTop: 5 }}>↑ 5 new this week</div>
+          <div style={{ fontSize: '3rem', fontWeight: 800 }}>{stats?.totalUsers || 0}</div>
         </div>
 
         {/* Recent Orders */}
@@ -113,40 +105,46 @@ export default function AdminDashboard() {
             </Link>
           </div>
 
-          <table style={{ width: '100%', borderCollapse: 'collapse' }}>
-            <thead>
-              <tr style={{ borderBottom: '2px solid #eee' }}>
-                <th style={{ textAlign: 'left', padding: '12px 0', fontWeight: 700, fontSize: '0.85rem', textTransform: 'uppercase', color: '#888' }}>Order</th>
-                <th style={{ textAlign: 'left', padding: '12px 0', fontWeight: 700, fontSize: '0.85rem', textTransform: 'uppercase', color: '#888' }}>Customer</th>
-                <th style={{ textAlign: 'left', padding: '12px 0', fontWeight: 700, fontSize: '0.85rem', textTransform: 'uppercase', color: '#888' }}>Total</th>
-                <th style={{ textAlign: 'left', padding: '12px 0', fontWeight: 700, fontSize: '0.85rem', textTransform: 'uppercase', color: '#888' }}>Status</th>
-                <th style={{ textAlign: 'left', padding: '12px 0', fontWeight: 700, fontSize: '0.85rem', textTransform: 'uppercase', color: '#888' }}>Date</th>
-              </tr>
-            </thead>
-            <tbody>
-              {mockStats.recentOrders.map((order) => (
-                <tr key={order.id} style={{ borderBottom: '1px solid #eee' }}>
-                  <td style={{ padding: '15px 0', fontWeight: 600 }}>{order.id}</td>
-                  <td style={{ padding: '15px 0' }}>{order.customer}</td>
-                  <td style={{ padding: '15px 0', fontWeight: 600 }}>${order.total.toLocaleString()}</td>
-                  <td style={{ padding: '15px 0' }}>
-                    <span style={{
-                      padding: '5px 12px',
-                      background: getStatusColor(order.status),
-                      color: 'white',
-                      fontSize: '0.7rem',
-                      fontWeight: 700,
-                      textTransform: 'uppercase',
-                      borderRadius: 4,
-                    }}>
-                      {order.status}
-                    </span>
-                  </td>
-                  <td style={{ padding: '15px 0', color: '#888' }}>{order.date}</td>
+          {stats?.recentOrders && stats.recentOrders.length > 0 ? (
+            <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+              <thead>
+                <tr style={{ borderBottom: '2px solid #eee' }}>
+                  <th style={{ textAlign: 'left', padding: '12px 0', fontWeight: 700, fontSize: '0.85rem', textTransform: 'uppercase', color: '#888' }}>Order</th>
+                  <th style={{ textAlign: 'left', padding: '12px 0', fontWeight: 700, fontSize: '0.85rem', textTransform: 'uppercase', color: '#888' }}>Customer</th>
+                  <th style={{ textAlign: 'left', padding: '12px 0', fontWeight: 700, fontSize: '0.85rem', textTransform: 'uppercase', color: '#888' }}>Total</th>
+                  <th style={{ textAlign: 'left', padding: '12px 0', fontWeight: 700, fontSize: '0.85rem', textTransform: 'uppercase', color: '#888' }}>Status</th>
+                  <th style={{ textAlign: 'left', padding: '12px 0', fontWeight: 700, fontSize: '0.85rem', textTransform: 'uppercase', color: '#888' }}>Date</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {stats.recentOrders.map((order) => (
+                  <tr key={order.id} style={{ borderBottom: '1px solid #eee' }}>
+                    <td style={{ padding: '15px 0', fontWeight: 600 }}>{order.id}</td>
+                    <td style={{ padding: '15px 0' }}>{order.customer}</td>
+                    <td style={{ padding: '15px 0', fontWeight: 600 }}>€{order.total.toLocaleString()}</td>
+                    <td style={{ padding: '15px 0' }}>
+                      <span style={{
+                        padding: '5px 12px',
+                        background: getStatusColor(order.status),
+                        color: 'white',
+                        fontSize: '0.7rem',
+                        fontWeight: 700,
+                        textTransform: 'uppercase',
+                        borderRadius: 4,
+                      }}>
+                        {order.status}
+                      </span>
+                    </td>
+                    <td style={{ padding: '15px 0', color: '#888' }}>{order.date}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          ) : (
+            <div style={{ textAlign: 'center', padding: 40, color: '#888' }}>
+              No orders yet
+            </div>
+          )}
         </div>
 
         {/* Top Products */}
@@ -158,17 +156,23 @@ export default function AdminDashboard() {
             </Link>
           </div>
 
-          {mockStats.topProducts.map((product, i) => (
-            <div key={i} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '15px 0', borderBottom: i < mockStats.topProducts.length - 1 ? '1px solid #eee' : 'none' }}>
-              <div>
-                <div style={{ fontWeight: 600 }}>{product.name}</div>
-                <div style={{ fontSize: '0.85rem', color: '#888' }}>{product.sold} sold</div>
+          {stats?.topProducts && stats.topProducts.length > 0 ? (
+            stats.topProducts.map((product, i) => (
+              <div key={i} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '15px 0', borderBottom: i < stats.topProducts.length - 1 ? '1px solid #eee' : 'none' }}>
+                <div>
+                  <div style={{ fontWeight: 600 }}>{product.name}</div>
+                  <div style={{ fontSize: '0.85rem', color: '#888' }}>{product.sold} sold</div>
+                </div>
+                <div style={{ fontWeight: 700, color: 'var(--accent-orange)' }}>
+                  €{product.revenue.toLocaleString()}
+                </div>
               </div>
-              <div style={{ fontWeight: 700, color: 'var(--accent-orange)' }}>
-                ${product.revenue.toLocaleString()}
-              </div>
+            ))
+          ) : (
+            <div style={{ textAlign: 'center', padding: 40, color: '#888' }}>
+              No sales data yet
             </div>
-          ))}
+          )}
         </div>
 
         {/* Quick Actions */}
@@ -224,5 +228,20 @@ export default function AdminDashboard() {
         </div>
       </main>
     </>
+  );
+}
+
+function AdminNav() {
+  return (
+    <nav style={{ background: '#000', mixBlendMode: 'normal' }}>
+      <Link href="/" className="logo" style={{ color: 'white' }}>BANG & OLUFSEN</Link>
+      <div className="nav-links">
+        <Link href="/admin" style={{ color: 'var(--accent-orange)' }}>Dashboard</Link>
+        <Link href="/admin/products">Products</Link>
+        <Link href="/admin/orders">Orders</Link>
+        <Link href="/admin/users">Users</Link>
+        <Link href="/" style={{ marginLeft: 20 }}>← Back to Store</Link>
+      </div>
+    </nav>
   );
 }

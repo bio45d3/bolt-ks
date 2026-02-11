@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { MobileNav } from "@/components/MobileNav";
 import { ToastContainer } from "@/components/Toast";
 
 export const metadata: Metadata = {
@@ -33,7 +32,6 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <MobileNav />
         <ToastContainer />
         {children}
       </body>
