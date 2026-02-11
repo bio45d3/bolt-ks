@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import { useState } from 'react';
 import { useCart } from '@/lib/cart';
+import { useToast } from '@/components/Toast';
 
 // Combined product data
 const products: Record<string, {
@@ -187,6 +188,7 @@ export default function ProductPage() {
   const [quantity, setQuantity] = useState(1);
   const [added, setAdded] = useState(false);
   const { addItem } = useCart();
+  const { addToast } = useToast();
 
   const handleAddToCart = () => {
     const priceNum = parseFloat(product.price.replace(/[$,]/g, ''));
@@ -200,6 +202,7 @@ export default function ProductPage() {
       });
     }
     setAdded(true);
+    addToast(`${product.name} added to cart!`, 'success');
     setTimeout(() => setAdded(false), 2000);
   };
 

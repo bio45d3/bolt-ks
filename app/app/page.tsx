@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import { Footer } from '@/components/Footer';
 
 function ArrowGraphic({ style = {} }: { style?: React.CSSProperties }) {
   return (
@@ -167,6 +168,8 @@ export default function Home() {
           </div>
         </div>
       </main>
+      
+      <Footer />
     </>
   );
 }
