@@ -1,13 +1,23 @@
+'use client';
+
 import Link from 'next/link';
 
-function ArrowGraphic({ className = '', style = {} }: { className?: string; style?: React.CSSProperties }) {
+function ArrowGraphic({ color = 'var(--accent-orange)', style = {} }: { color?: string; style?: React.CSSProperties }) {
   return (
-    <svg className={`arrow-graphic ${className}`} viewBox="0 0 20 60" style={style}>
+    <svg 
+      className="arrow-graphic" 
+      viewBox="0 0 20 60" 
+      style={{ stroke: color, ...style }}
+    >
       <line x1="10" y1="0" x2="10" y2="55" />
       <line x1="10" y1="55" x2="2" y2="45" />
       <line x1="10" y1="55" x2="18" y2="45" />
     </svg>
   );
+}
+
+function ColorDot({ color }: { color: string }) {
+  return <div className="color-dot" style={{ background: color }} />;
 }
 
 export default function Home() {
@@ -24,8 +34,17 @@ export default function Home() {
       </nav>
 
       <main>
-        {/* Hero - Clean text only */}
+        {/* Hero Card */}
         <div className="card dark hero-span">
+          <div className="giant-letter">90</div>
+          <div className="hero-visual">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="https://www.bang-olufsen.com/cdn-cgi/image/width=1200,quality=90/media/catalog/product/b/e/beolab-90-natural-aluminium-set-quater-product.png"
+              alt="Beolab 90"
+              className="hero-img"
+            />
+          </div>
           <div className="hero-content" style={{ gridColumn: 1 }}>
             <div className="label text-orange">Flagship Innovation</div>
             <h1 className="overlay-text">
@@ -35,16 +54,21 @@ export default function Home() {
             </h1>
           </div>
           <div className="hero-content" style={{ gridColumn: 2, alignItems: 'flex-end', textAlign: 'right' }}>
+            <div className="price-tag">
+              <span className="label">MSRP</span><br />
+              $80,000.00
+            </div>
             <div className="desc-block">
               In the years following its inception, the Beolab 90 has stood as the pinnacle of acoustic engineering. Active Room Compensation meets visionary design.
             </div>
           </div>
         </div>
 
-        {/* Beoplay A9 - Portable Speaker */}
+        {/* Beoplay A9 */}
         <div className="card light product-span">
           <div className="price-tag">$2,999.00</div>
           <div className="orange-shape shape-rect" />
+          <div className="vertical-text">Active Noise Cancellation</div>
           <h2 className="overlay-text" style={{ marginTop: 40 }}>
             BEOPLAY<br />
             <span className="text-orange">A9</span><br />
@@ -52,24 +76,24 @@ export default function Home() {
           </h2>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            src="https://www.bang-olufsen.com/cdn-cgi/image/width=960,quality=85/media/catalog/product/b/e/beoplay-a1-2nd-gen-grey-mist-side-product.png"
+            src="https://www.bang-olufsen.com/cdn-cgi/image/width=960,quality=90/media/catalog/product/b/e/beoplay-a1-2nd-gen-grey-mist-side-product.png"
             alt="Beoplay A9"
             className="product-img"
           />
           <div className="pill-container">
             <div className="pill">
               COVER
-              <div className="color-dot" style={{ background: '#ddd' }} />
+              <ColorDot color="#ddd" />
             </div>
             <div className="pill">
               LEGS
-              <div className="color-dot" style={{ background: '#8B4513' }} />
+              <ColorDot color="#8B4513" />
             </div>
           </div>
           <ArrowGraphic />
         </div>
 
-        {/* Beoplay H95 - Headphones */}
+        {/* Beoplay H95 */}
         <div className="card dark product-span">
           <div className="price-tag text-orange">$899.00</div>
           <div style={{ position: 'absolute', top: 100, left: -20, fontSize: '10rem', opacity: 0.1, fontWeight: 900 }}>
@@ -77,7 +101,7 @@ export default function Home() {
           </div>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            src="https://www.bang-olufsen.com/cdn-cgi/image/width=960,quality=85/media/catalog/product/b/e/beoplay-h95-adaptive-anc-black-angle-product_2.png"
+            src="https://www.bang-olufsen.com/cdn-cgi/image/width=960,quality=90/media/catalog/product/b/e/beoplay-h95-adaptive-anc-black-angle-product_2.png"
             alt="Beoplay H95"
             className="product-img"
             style={{ width: '70%' }}
@@ -93,7 +117,7 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Beolit 20 - Portable */}
+        {/* Beolit 20 */}
         <div className="card light product-span" style={{ backgroundColor: '#D4D4D4' }}>
           <div className="price-tag">$549.00</div>
           <div className="orange-shape shape-circle" style={{ backgroundColor: 'white' }} />
@@ -101,12 +125,19 @@ export default function Home() {
             <h2 className="overlay-text" style={{ color: 'black', fontSize: '2.5rem' }}>
               PORTABLE<br />POWER
             </h2>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="https://www.bang-olufsen.com/cdn-cgi/image/width=960,quality=90/media/catalog/product/b/e/beolit-20-black-anthracite-hero-quater-product.png"
+              alt="Beolit 20"
+              className="product-img"
+              style={{ width: '55%', top: '60%' }}
+            />
             <div style={{ marginTop: 'auto' }}>
               <div className="label" style={{ marginBottom: 5 }}>BEOLIT 20</div>
               <div className="desc-block">
                 Big sound for every moment. Long-lasting battery, integrated wireless Qi charging.
               </div>
-              <ArrowGraphic style={{ right: 'auto', left: 30, bottom: 10, height: 40, stroke: 'black' }} />
+              <ArrowGraphic color="black" style={{ right: 'auto', left: 30, bottom: 10, height: 40 }} />
             </div>
           </div>
         </div>
