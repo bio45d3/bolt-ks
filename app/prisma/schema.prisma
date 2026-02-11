@@ -111,6 +111,7 @@ model Product {
   cartItems   CartItem[]
   orderItems  OrderItem[]
   campaignProducts CampaignProduct[]
+  featuredSlots FeaturedProduct[]
 
   @@map("products")
 }
@@ -329,4 +330,20 @@ model Admin {
   updatedAt    DateTime @updatedAt
 
   @@map("admins")
+}
+
+// ============================================
+// FEATURED PRODUCTS (Homepage Display)
+// ============================================
+
+model FeaturedProduct {
+  id        String   @id @default(cuid())
+  position  Int      @unique  // 1=Hero, 2-4=Featured cards
+  productId String
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("featured_products")
 }

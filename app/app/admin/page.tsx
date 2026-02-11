@@ -220,6 +220,22 @@ export default function AdminDashboard() {
               Manage Products
             </Link>
             <Link
+              href="/admin/featured"
+              style={{
+                flex: '1 1 200px',
+                padding: '25px',
+                background: 'var(--accent-orange)',
+                color: 'white',
+                textDecoration: 'none',
+                textAlign: 'center',
+                fontWeight: 800,
+                textTransform: 'uppercase',
+                borderRadius: 8,
+              }}
+            >
+              Featured Display
+            </Link>
+            <Link
               href="/admin/orders"
               style={{
                 flex: '1 1 200px',
@@ -262,10 +278,11 @@ export default function AdminDashboard() {
 function AdminNav({ active }: { active: string }) {
   return (
     <nav className="site-nav" style={{ background: '#000', mixBlendMode: 'normal' }}>
-      <Link href="/" className="logo" style={{ color: 'white' }}>BOLT KS</Link>
+      <Link href="/" className="logo" style={{ color: 'white' }}>BOLD</Link>
       <div className="nav-links desktop-nav">
         <Link href="/admin" style={{ color: active === 'dashboard' ? 'var(--accent-orange)' : 'white' }}>Dashboard</Link>
         <Link href="/admin/products" style={{ color: active === 'products' ? 'var(--accent-orange)' : 'white' }}>Products</Link>
+        <Link href="/admin/featured" style={{ color: active === 'featured' ? 'var(--accent-orange)' : 'white' }}>Featured</Link>
         <Link href="/admin/orders" style={{ color: active === 'orders' ? 'var(--accent-orange)' : 'white' }}>Orders</Link>
         <Link href="/" style={{ marginLeft: 20 }}>← Store</Link>
       </div>
