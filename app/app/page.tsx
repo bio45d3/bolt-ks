@@ -3,320 +3,572 @@
 import Link from 'next/link';
 import { Footer } from '@/components/Footer';
 import { Navigation } from '@/components/Navigation';
-
-const brands = [
-  {
-    id: 'bang-olufsen',
-    name: 'Bang & Olufsen',
-    country: 'Denmark',
-    tagline: 'Exceptional sound. Timeless design.',
-    description: 'Since 1925, crafting audio experiences that define generations.',
-    color: '#000000',
-    featured: {
-      name: 'Beosound A9',
-      price: '$4,550',
-      image: 'https://images.unsplash.com/photo-1545454675-3531b543be5d?w=800&auto=format&fit=crop&q=60',
-    },
-  },
-  {
-    id: 'devialet',
-    name: 'Devialet',
-    country: 'France',
-    tagline: 'Engineering emotion.',
-    description: 'Parisian innovation pushing the boundaries of acoustic engineering.',
-    color: '#000000',
-    featured: {
-      name: 'Phantom I',
-      price: '$3,200',
-      image: 'https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?w=800&auto=format&fit=crop&q=60',
-    },
-  },
-  {
-    id: 'loewe',
-    name: 'Loewe',
-    country: 'Germany',
-    tagline: 'German engineering. Iconic design.',
-    description: 'Premium televisions and audio since 1923.',
-    color: '#000000',
-    featured: {
-      name: 'Stellar TV',
-      price: 'Contact Us',
-      image: 'https://images.unsplash.com/photo-1593359677879-a4bb92f829d1?w=800&auto=format&fit=crop&q=60',
-    },
-  },
-];
-
-const featuredProducts = [
-  { id: 'beosound-2', name: 'Beosound 2', brand: 'Bang & Olufsen', price: '$4,000', image: 'https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?w=600', category: 'Speakers' },
-  { id: 'phantom-ii', name: 'Phantom II', brand: 'Devialet', price: '$1,400', image: 'https://images.unsplash.com/photo-1545454675-3531b543be5d?w=600', category: 'Speakers' },
-  { id: 'beoplay-h95', name: 'Beoplay H95', brand: 'Bang & Olufsen', price: '$1,250', image: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=600', category: 'Headphones' },
-  { id: 'dione', name: 'Dione', brand: 'Devialet', price: '$2,490', image: 'https://images.unsplash.com/photo-1558089687-f282ffcbc126?w=600', category: 'Soundbars' },
-];
+import { useEffect } from 'react';
 
 export default function Home() {
+  // Mouse move effect for product images
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      const cards = document.querySelectorAll('.card');
+      const x = e.clientX / window.innerWidth;
+      const y = e.clientY / window.innerHeight;
+      cards.forEach(card => {
+        const img = card.querySelector('.product-img, .hero-img') as HTMLElement;
+        if (img) {
+          const moveX = (x - 0.5) * 10;
+          const moveY = (y - 0.5) * 10;
+          img.style.transform = `translate(-50%, -50%) translate(${moveX}px, ${moveY}px)`;
+        }
+      });
+    };
+    document.addEventListener('mousemove', handleMouseMove);
+    return () => document.removeEventListener('mousemove', handleMouseMove);
+  }, []);
+
   return (
     <>
       <Navigation />
 
-      <main>
-        {/* Hero Section */}
-        <div className="card dark hero-span" style={{ minHeight: '80vh', position: 'relative', overflow: 'hidden' }}>
-          <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(135deg, #000 0%, #1a1a1a 100%)' }} />
-          <div style={{ position: 'relative', zIndex: 2, display: 'flex', flexDirection: 'column', justifyContent: 'center', height: '100%', padding: '60px' }}>
-            <div className="label text-orange" style={{ marginBottom: 20 }}>Authorized Retailer in Kosovo</div>
-            <h1 style={{ fontSize: 'clamp(3rem, 8vw, 6rem)', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '-0.03em', lineHeight: 0.9, marginBottom: 30 }}>
-              Premium<br />
-              Audio &<br />
-              <span className="text-orange">Television</span>
-            </h1>
-            <p style={{ fontSize: '1.1rem', color: '#888', maxWidth: 500, marginBottom: 40, lineHeight: 1.6 }}>
-              Experience world-class sound and vision from Bang & Olufsen, Devialet, and Loewe. 
-              Curated for discerning audiophiles in Kosovo.
-            </p>
-            <div style={{ display: 'flex', gap: 15, flexWrap: 'wrap' }}>
-              <Link
-                href="/shop"
-                style={{
-                  padding: '20px 40px',
-                  background: 'var(--accent-orange)',
-                  color: 'white',
-                  textDecoration: 'none',
-                  fontWeight: 800,
-                  textTransform: 'uppercase',
-                  fontSize: '0.9rem',
-                }}
-              >
-                Shop Now
-              </Link>
-              <Link
-                href="/support"
-                style={{
-                  padding: '20px 40px',
-                  background: 'transparent',
-                  border: '1px solid #444',
-                  color: 'white',
-                  textDecoration: 'none',
-                  fontWeight: 800,
-                  textTransform: 'uppercase',
-                  fontSize: '0.9rem',
-                }}
-              >
-                Visit Showroom
-              </Link>
-            </div>
-          </div>
-          {/* Decorative element */}
-          <div style={{ position: 'absolute', right: '-10%', top: '50%', transform: 'translateY(-50%)', width: '50%', height: '120%', background: 'var(--accent-orange)', opacity: 0.1, borderRadius: '50%', filter: 'blur(100px)' }} />
-        </div>
-
-        {/* Brand Selector Section */}
-        <div style={{ gridColumn: 'span 12', padding: '60px 0 30px' }}>
-          <div className="label text-orange" style={{ marginBottom: 10 }}>Our Brands</div>
-          <h2 style={{ fontSize: 'clamp(2rem, 4vw, 3rem)', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '-0.02em' }}>
-            Three Legends. One Destination.
-          </h2>
-        </div>
-
-        {/* Brand Cards */}
-        {brands.map((brand, index) => (
-          <Link
-            key={brand.id}
-            href={`/shop?brand=${brand.id}`}
-            className={`card ${index === 1 ? 'dark' : 'light'}`}
-            style={{
-              gridColumn: 'span 4',
-              minHeight: 450,
-              textDecoration: 'none',
-              color: 'inherit',
-              display: 'flex',
-              flexDirection: 'column',
-              position: 'relative',
-              overflow: 'hidden',
-            }}
-          >
-            {/* Brand Image */}
-            <div style={{
-              height: 220,
-              background: index === 1 ? '#1a1a1a' : '#f5f5f5',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              overflow: 'hidden',
-            }}>
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src={brand.featured.image}
-                alt={brand.featured.name}
-                style={{ width: '100%', height: '100%', objectFit: 'cover', opacity: 0.8 }}
-              />
-            </div>
-
-            {/* Brand Info */}
-            <div style={{ padding: 25, flex: 1, display: 'flex', flexDirection: 'column' }}>
-              <div className="label" style={{ marginBottom: 5, color: index === 1 ? '#666' : '#888' }}>
-                {brand.country}
-              </div>
-              <h3 style={{
-                fontSize: '1.75rem',
-                fontWeight: 800,
-                textTransform: 'uppercase',
-                marginBottom: 10,
-                color: index === 1 ? 'white' : 'black',
-              }}>
-                {brand.name}
-              </h3>
-              <p style={{
-                fontSize: '0.9rem',
-                color: index === 1 ? '#888' : '#666',
-                lineHeight: 1.5,
-                marginBottom: 20,
-              }}>
-                {brand.tagline}
-              </p>
-              <div style={{
-                marginTop: 'auto',
-                color: 'var(--accent-orange)',
-                fontWeight: 700,
-                fontSize: '0.85rem',
-                textTransform: 'uppercase',
-              }}>
-                Explore {brand.name} →
-              </div>
-            </div>
-          </Link>
-        ))}
-
-        {/* Featured Products Section */}
-        <div style={{ gridColumn: 'span 12', padding: '60px 0 30px' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', flexWrap: 'wrap', gap: 20 }}>
-            <div>
-              <div className="label text-orange" style={{ marginBottom: 10 }}>Featured</div>
-              <h2 style={{ fontSize: 'clamp(2rem, 4vw, 3rem)', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '-0.02em' }}>
-                Popular Products
-              </h2>
-            </div>
-            <Link
-              href="/shop"
-              style={{
-                color: 'var(--accent-orange)',
-                textDecoration: 'none',
-                fontWeight: 700,
-                fontSize: '0.9rem',
-                textTransform: 'uppercase',
-              }}
-            >
-              View All Products →
-            </Link>
-          </div>
-        </div>
-
-        {/* Product Grid */}
-        {featuredProducts.map((product) => (
-          <Link
-            key={product.id}
-            href={`/product/${product.id}`}
-            className="card light"
-            style={{
-              gridColumn: 'span 3',
-              padding: 0,
-              textDecoration: 'none',
-              color: 'inherit',
-              overflow: 'hidden',
-            }}
-          >
-            <div style={{
-              height: 200,
-              background: '#f5f5f5',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}>
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src={product.image}
-                alt={product.name}
-                style={{ maxWidth: '80%', maxHeight: '80%', objectFit: 'contain' }}
-              />
-            </div>
-            <div style={{ padding: 20 }}>
-              <div className="label" style={{ marginBottom: 5, color: '#888', fontSize: '0.7rem' }}>
-                {product.brand} • {product.category}
-              </div>
-              <h3 style={{ fontSize: '1.1rem', fontWeight: 800, marginBottom: 8, textTransform: 'uppercase' }}>
-                {product.name}
-              </h3>
-              <div style={{ fontWeight: 800, color: product.price === 'Contact Us' ? 'var(--accent-orange)' : 'inherit' }}>
-                {product.price}
-              </div>
-            </div>
-          </Link>
-        ))}
-
-        {/* CTA Banner */}
-        <div className="card dark" style={{ gridColumn: 'span 12', padding: 'clamp(40px, 6vw, 80px)', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 30, marginTop: 20 }}>
-          <div style={{ flex: 1, minWidth: 280 }}>
-            <div className="label text-orange" style={{ marginBottom: 10 }}>Experience in Person</div>
-            <h2 style={{ fontSize: 'clamp(1.5rem, 3vw, 2.5rem)', fontWeight: 800, textTransform: 'uppercase', lineHeight: 1.1 }}>
-              Visit Our<br />Pristina Showroom
-            </h2>
-            <p style={{ marginTop: 15, color: '#888', maxWidth: 400 }}>
-              See, hear, and feel the difference. Our experts will help you find the perfect audio solution.
-            </p>
-          </div>
-          <Link
-            href="/support"
-            style={{
-              padding: '20px 40px',
-              background: 'var(--accent-orange)',
-              color: 'white',
-              textDecoration: 'none',
-              fontWeight: 800,
-              textTransform: 'uppercase',
-              fontSize: '0.9rem',
-            }}
-          >
-            Get Directions
-          </Link>
-        </div>
-
-        {/* Newsletter */}
-        <div className="card light" style={{ gridColumn: 'span 12', padding: 'clamp(40px, 6vw, 60px)', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 30 }}>
-          <div style={{ flex: 1, minWidth: 280 }}>
-            <div className="label text-orange">Newsletter</div>
-            <h2 style={{ fontSize: 'clamp(1.5rem, 3vw, 2.5rem)', fontWeight: 800, textTransform: 'uppercase', marginTop: 10 }}>
-              Stay Updated
-            </h2>
-            <p style={{ marginTop: 10, color: '#666' }}>
-              New arrivals, exclusive offers, and audio insights.
-            </p>
-          </div>
-          <div style={{ display: 'flex', gap: 15, flexWrap: 'wrap' }}>
-            <input
-              type="email"
-              placeholder="Your email"
-              style={{
-                padding: '18px 20px',
-                border: '1px solid #ddd',
-                width: 280,
-                fontSize: '1rem',
-              }}
+      <main className="home-main">
+        {/* Hero Card - Beolab 90 */}
+        <div className="card dark hero-span">
+          <div className="giant-letter">90</div>
+          <div className="hero-visual">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img 
+              src="https://pngimg.com/uploads/loudspeaker/loudspeaker_PNG101569.png" 
+              alt="Beolab 90" 
+              className="hero-img"
             />
-            <button style={{
-              background: 'var(--accent-orange)',
-              border: 'none',
-              padding: '18px 35px',
-              fontWeight: 800,
-              textTransform: 'uppercase',
-              cursor: 'pointer',
-              color: 'white',
-            }}>
-              Subscribe
-            </button>
+          </div>
+          <div className="hero-content" style={{ gridColumn: 1 }}>
+            <div className="label text-orange">Flagship Innovation</div>
+            <h1 className="overlay-text">
+              THE SHAPE<br />
+              OF SOUND<br />
+              <span className="text-orange">REDEFINED</span>
+            </h1>
+          </div>
+          <div className="hero-content hero-content-right">
+            <div className="price-tag">
+              <span className="label">MSRP</span><br />
+              $80,000.00
+            </div>
+            <div className="desc-block">
+              In the years following its inception, the Beolab 90 has stood as the pinnacle of acoustic engineering. Active Room Compensation meets visionary design.
+            </div>
+          </div>
+        </div>
+
+        {/* Product Card 1 - Beosound A9 */}
+        <Link href="/product/beosound-a9" className="card light product-span">
+          <div className="price-tag">$4,550.00</div>
+          <div className="orange-shape shape-rect"></div>
+          <div className="vertical-text">Active Noise Cancellation</div>
+          <h2 className="overlay-text" style={{ marginTop: 40 }}>
+            BEOPLAY<br />
+            <span className="text-orange">A9</span><br />
+            ORIGINAL
+          </h2>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img 
+            src="https://pngimg.com/d/wireless_speaker_PNG18.png" 
+            alt="Beosound A9" 
+            className="product-img"
+          />
+          <div className="pill-container">
+            <div className="pill">
+              COVER
+              <div className="color-dot" style={{ background: '#ddd' }}></div>
+            </div>
+            <div className="pill">
+              LEGS
+              <div className="color-dot" style={{ background: '#8B4513' }}></div>
+            </div>
+          </div>
+          <svg className="arrow-graphic" viewBox="0 0 20 60">
+            <line x1="10" y1="0" x2="10" y2="55"></line>
+            <line x1="10" y1="55" x2="2" y2="45"></line>
+            <line x1="10" y1="55" x2="18" y2="45"></line>
+          </svg>
+        </Link>
+
+        {/* Product Card 2 - Beoplay H95 */}
+        <Link href="/product/beoplay-h95" className="card dark product-span">
+          <div className="price-tag text-orange">$1,250.00</div>
+          <div className="ghost-text">H95</div>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img 
+            src="https://pngimg.com/uploads/headphones/headphones_PNG7645.png" 
+            alt="Beoplay H95" 
+            className="product-img"
+            style={{ width: '70%' }}
+          />
+          <div className="product-info">
+            <h2 style={{ fontSize: '2.5rem', marginBottom: 10 }}>BEOPLAY H95</h2>
+            <div className="desc-block" style={{ color: '#888' }}>
+              Ultimate over-ear headphones. Moving titanium drivers and lambskin memory foam.
+            </div>
+            <div className="pill-container" style={{ marginTop: 20 }}>
+              <div className="pill filled">ADD TO CART</div>
+            </div>
+          </div>
+        </Link>
+
+        {/* Product Card 3 - Beolit 20 */}
+        <Link href="/product/beolit-20" className="card light product-span" style={{ backgroundColor: '#D4D4D4' }}>
+          <div className="price-tag">$549.00</div>
+          <div className="orange-shape shape-circle" style={{ backgroundColor: 'white' }}></div>
+          <div className="product-content-full">
+            <h2 className="overlay-text" style={{ color: 'black', fontSize: '2.5rem' }}>
+              PORTABLE<br />POWER
+            </h2>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img 
+              src="https://pngimg.com/uploads/bluetooth_speaker/bluetooth_speaker_PNG36.png" 
+              alt="Beolit 20" 
+              className="product-img"
+              style={{ width: '55%', top: '60%' }}
+            />
+            <div style={{ marginTop: 'auto' }}>
+              <div className="label" style={{ marginBottom: 5 }}>BEOLIT 20</div>
+              <div className="desc-block">
+                Big sound for every moment. Long-lasting battery, integrated wireless Qi charging.
+              </div>
+              <svg className="arrow-graphic arrow-left" viewBox="0 0 20 60">
+                <line x1="10" y1="0" x2="10" y2="55"></line>
+                <line x1="10" y1="55" x2="2" y2="45"></line>
+                <line x1="10" y1="55" x2="18" y2="45"></line>
+              </svg>
+            </div>
+          </div>
+        </Link>
+
+        {/* Newsletter Section */}
+        <div className="card dark newsletter-section">
+          <div className="newsletter-content">
+            <div className="label text-orange">NEWSLETTER</div>
+            <h2 className="newsletter-title">JOIN THE<br />AUDIOPHILE CLUB</h2>
+          </div>
+          <div className="newsletter-form">
+            <input 
+              type="email" 
+              placeholder="ENTER EMAIL" 
+              className="newsletter-input"
+            />
+            <button className="newsletter-btn">Subscribe</button>
           </div>
         </div>
       </main>
-      
+
       <Footer />
+
+      <style jsx>{`
+        .home-main {
+          padding: 100px 40px 40px 40px;
+          display: grid;
+          grid-template-columns: repeat(12, 1fr);
+          gap: 20px;
+          max-width: 1800px;
+          margin: 0 auto;
+        }
+
+        .card {
+          border-radius: var(--radius);
+          position: relative;
+          overflow: hidden;
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
+          transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+          border: 1px solid rgba(0,0,0,0.1);
+          text-decoration: none;
+          color: inherit;
+        }
+
+        .card:hover {
+          transform: translateY(-5px);
+        }
+
+        .card.dark {
+          background-color: var(--card-dark);
+          color: var(--text-light);
+          border: none;
+        }
+
+        .card.light {
+          background-color: var(--card-light);
+          color: var(--text-dark);
+          border: 1px solid var(--text-dark);
+        }
+
+        /* Hero Card */
+        .hero-span {
+          grid-column: span 12;
+          height: 85vh;
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          position: relative;
+        }
+
+        .hero-content {
+          padding: 60px;
+          z-index: 2;
+          display: flex;
+          flex-direction: column;
+          justify-content: flex-end;
+        }
+
+        .hero-content-right {
+          grid-column: 2;
+          align-items: flex-end;
+          text-align: right;
+        }
+
+        .giant-letter {
+          position: absolute;
+          font-size: 35rem;
+          font-weight: 900;
+          color: var(--accent-orange);
+          opacity: 1;
+          line-height: 0;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          z-index: 0;
+          overflow: hidden;
+          pointer-events: none;
+        }
+
+        .hero-visual {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          z-index: 2;
+        }
+
+        .hero-img {
+          max-height: 90%;
+          max-width: 60%;
+          object-fit: contain;
+          filter: drop-shadow(0 20px 40px rgba(0,0,0,0.4));
+          transition: transform 0.5s ease;
+        }
+
+        .card:hover .hero-img {
+          transform: scale(1.05) rotate(-2deg);
+        }
+
+        /* Product Cards */
+        .product-span {
+          grid-column: span 4;
+          height: 600px;
+          padding: 30px;
+        }
+
+        .orange-shape {
+          position: absolute;
+          background-color: var(--accent-orange);
+          z-index: 0;
+        }
+
+        .shape-rect {
+          width: 60%;
+          height: 80%;
+          top: 10%;
+          left: 20%;
+          transform: rotate(-5deg);
+        }
+
+        .shape-circle {
+          width: 80%;
+          padding-bottom: 80%;
+          border-radius: 50%;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+        }
+
+        .product-img {
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          width: 80%;
+          z-index: 2;
+          filter: drop-shadow(0 10px 20px rgba(0,0,0,0.2));
+          transition: transform 0.3s ease;
+        }
+
+        .card:hover .product-img {
+          transform: translate(-50%, -55%) scale(1.02);
+        }
+
+        .vertical-text {
+          position: absolute;
+          left: 20px;
+          top: 50%;
+          transform: translateY(-50%) rotate(-90deg);
+          transform-origin: center;
+          font-size: 0.8rem;
+          font-weight: 700;
+          text-transform: uppercase;
+          letter-spacing: 0.1em;
+          color: var(--accent-orange);
+          white-space: nowrap;
+        }
+
+        .ghost-text {
+          position: absolute;
+          top: 100px;
+          left: -20px;
+          font-size: 10rem;
+          opacity: 0.1;
+          font-weight: 900;
+        }
+
+        .product-info {
+          z-index: 3;
+          padding: 30px;
+          margin-top: auto;
+        }
+
+        .product-content-full {
+          z-index: 3;
+          padding: 30px;
+          height: 100%;
+          display: flex;
+          flex-direction: column;
+        }
+
+        /* Pills */
+        .pill-container {
+          display: flex;
+          gap: 10px;
+          margin-top: auto;
+          z-index: 3;
+          position: relative;
+        }
+
+        .pill {
+          border: 1px solid currentColor;
+          padding: 6px 16px;
+          border-radius: 50px;
+          font-size: 0.7rem;
+          font-weight: 700;
+          text-transform: uppercase;
+          display: inline-flex;
+          align-items: center;
+          gap: 6px;
+        }
+
+        .pill.filled {
+          background: currentColor;
+          color: var(--bg-color);
+        }
+
+        .color-dot {
+          width: 10px;
+          height: 10px;
+          border-radius: 50%;
+          background-color: #C6A665;
+          border: 1px solid rgba(0,0,0,0.2);
+        }
+
+        /* Typography */
+        .overlay-text {
+          font-size: 3.5rem;
+          line-height: 0.85;
+          position: relative;
+          z-index: 3;
+          margin-bottom: 20px;
+          pointer-events: none;
+          font-weight: 800;
+          text-transform: uppercase;
+          letter-spacing: -0.03em;
+        }
+
+        .price-tag {
+          position: absolute;
+          top: 25px;
+          right: 25px;
+          z-index: 4;
+          font-family: monospace;
+          font-weight: 600;
+          font-size: 0.9rem;
+        }
+
+        .desc-block {
+          font-size: 0.9rem;
+          line-height: 1.4;
+          max-width: 80%;
+          margin-top: 10px;
+          z-index: 3;
+          position: relative;
+        }
+
+        .label {
+          font-family: monospace;
+          text-transform: uppercase;
+          font-size: 0.75rem;
+          letter-spacing: 0.05em;
+        }
+
+        .text-orange {
+          color: var(--accent-orange);
+        }
+
+        /* Arrow Graphic */
+        .arrow-graphic {
+          width: 20px;
+          height: 60px;
+          position: absolute;
+          bottom: 30px;
+          right: 30px;
+          stroke: var(--accent-orange);
+          stroke-width: 2;
+          fill: none;
+        }
+
+        .arrow-left {
+          right: auto;
+          left: 30px;
+          bottom: 10px;
+          height: 40px;
+          stroke: black;
+        }
+
+        /* Newsletter */
+        .newsletter-section {
+          grid-column: span 12;
+          padding: 60px;
+          flex-direction: row;
+          align-items: center;
+          border-radius: var(--radius);
+        }
+
+        .newsletter-content {
+          flex: 1;
+        }
+
+        .newsletter-title {
+          font-size: 4vw;
+          margin-top: 20px;
+          font-weight: 800;
+          text-transform: uppercase;
+          letter-spacing: -0.03em;
+          line-height: 0.9;
+        }
+
+        .newsletter-form {
+          flex: 1;
+          display: flex;
+          gap: 20px;
+          align-items: center;
+          justify-content: flex-end;
+        }
+
+        .newsletter-input {
+          background: transparent;
+          border: 1px solid #333;
+          padding: 20px;
+          color: white;
+          width: 300px;
+          font-family: monospace;
+          text-transform: uppercase;
+        }
+
+        .newsletter-btn {
+          background: var(--accent-orange);
+          border: none;
+          padding: 20px 40px;
+          font-weight: 800;
+          text-transform: uppercase;
+          cursor: pointer;
+          color: white;
+        }
+
+        /* Responsive */
+        @media (max-width: 1200px) {
+          .product-span {
+            grid-column: span 6;
+          }
+        }
+
+        @media (max-width: 900px) {
+          .home-main {
+            padding: 100px 20px 20px 20px;
+            gap: 15px;
+          }
+
+          .product-span {
+            grid-column: span 12;
+            height: 500px;
+          }
+
+          .hero-span {
+            height: auto;
+            min-height: 80vh;
+            grid-template-columns: 1fr;
+          }
+
+          .hero-content-right {
+            grid-column: 1;
+            align-items: flex-start;
+            text-align: left;
+          }
+
+          .giant-letter {
+            font-size: 15rem;
+          }
+
+          .overlay-text {
+            font-size: 2.5rem;
+          }
+
+          .newsletter-section {
+            flex-direction: column;
+            gap: 30px;
+            padding: 40px;
+          }
+
+          .newsletter-form {
+            flex-direction: column;
+            width: 100%;
+          }
+
+          .newsletter-input {
+            width: 100%;
+          }
+
+          .newsletter-title {
+            font-size: 8vw;
+          }
+        }
+
+        @media (max-width: 600px) {
+          .home-main {
+            padding: 80px 15px 15px 15px;
+          }
+
+          .giant-letter {
+            font-size: 10rem;
+          }
+
+          .hero-content {
+            padding: 30px;
+          }
+
+          .overlay-text {
+            font-size: 2rem;
+          }
+        }
+      `}</style>
     </>
   );
 }

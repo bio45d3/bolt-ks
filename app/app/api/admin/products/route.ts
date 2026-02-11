@@ -5,12 +5,14 @@ export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
     const page = parseInt(searchParams.get('page') || '1');
-    const limit = parseInt(searchParams.get('limit') || '20');
+    const limit = parseInt(searchParams.get('limit') || '50');
     const category = searchParams.get('category');
+    const brand = searchParams.get('brand');
     const search = searchParams.get('search');
 
     const where: any = {};
     if (category) where.category = { slug: category };
+    if (brand) where.brand = brand;
     if (search) {
       where.OR = [
         { name: { contains: search, mode: 'insensitive' } },
@@ -35,11 +37,17 @@ export async function GET(request: NextRequest) {
         sku: p.sku,
         name: p.name,
         slug: p.slug,
-        price: Number(p.price),
+        subtitle: p.subtitle,
+        brand: p.brand,
+        price: p.price ? Number(p.price) : null,
+        compareAt: p.compareAt ? Number(p.compareAt) : null,
+        contactOnly: p.contactOnly,
         category: p.category.name,
+        categoryId: p.categoryId,
         inStock: p.inStock,
         stockCount: p.stockCount,
         featured: p.featured,
+        images: p.images,
         image: p.images[0] || null,
       })),
       total,
@@ -56,18 +64,25 @@ export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
 
+    // Generate slug from name if not provided
+    const slug = body.slug || body.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+
     const product = await prisma.product.create({
       data: {
         sku: body.sku,
         name: body.name,
-        slug: body.slug,
+        slug,
+        subtitle: body.subtitle,
         description: body.description,
+        longDescription: body.longDescription,
+        brand: body.brand || 'BANG_OLUFSEN',
         categoryId: body.categoryId,
-        price: body.price,
-        compareAt: body.compareAt,
+        price: body.price !== null && body.price !== '' ? body.price : null,
+        compareAt: body.compareAt !== null && body.compareAt !== '' ? body.compareAt : null,
+        contactOnly: body.contactOnly || false,
         images: body.images || [],
-        colors: body.colors,
-        specs: body.specs,
+        colors: body.colors || [],
+        specs: body.specs || {},
         featured: body.featured || false,
         inStock: body.inStock ?? true,
         stockCount: body.stockCount || 0,

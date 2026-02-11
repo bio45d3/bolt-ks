@@ -1,54 +1,60 @@
 'use client';
-import { Navigation } from '@/components/Navigation';
 
 import Link from 'next/link';
+import { Navigation } from '@/components/Navigation';
+import { Footer } from '@/components/Footer';
 
 const speakers = [
   {
     id: 'beolab-90',
     name: 'Beolab 90',
     subtitle: 'Flagship',
-    price: '$80,000.00',
-    image: 'https://images.unsplash.com/photo-1558089687-f282ffcbc126?w=800&auto=format&fit=crop&q=60',
+    price: '$80,000',
+    image: 'https://pngimg.com/uploads/loudspeaker/loudspeaker_PNG101569.png',
     description: 'The pinnacle of acoustic engineering',
     colors: ['#C0C0C0', '#000000'],
     featured: true,
+    letter: '90',
   },
   {
     id: 'beosound-a9',
     name: 'Beosound A9',
     subtitle: 'Iconic Design',
-    price: '$4,550.00',
-    image: 'https://images.unsplash.com/photo-1545454675-3531b543be5d?w=800&auto=format&fit=crop&q=60',
+    price: '$4,550',
+    image: 'https://pngimg.com/d/wireless_speaker_PNG18.png',
     description: 'Modern meets classic. A design speaker icon.',
     colors: ['#1E3A5F', '#C6A665', '#2F2F2F'],
+    letter: 'A9',
   },
   {
     id: 'beosound-2',
     name: 'Beosound 2',
     subtitle: '360° Sound',
-    price: '$4,000.00',
-    image: 'https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?w=800&auto=format&fit=crop&q=60',
+    price: '$4,000',
+    image: 'https://pngimg.com/d/wireless_speaker_PNG18.png',
     description: 'Captivating beauty. Astonishing power.',
     colors: ['#C6A665', '#2F2F2F', '#C0C0C0'],
+    letter: '2',
   },
   {
     id: 'beosound-balance',
     name: 'Beosound Balance',
     subtitle: 'Living Room',
-    price: '$3,650.00',
-    image: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&auto=format&fit=crop&q=60',
+    price: '$3,650',
+    image: 'https://pngimg.com/uploads/bluetooth_speaker/bluetooth_speaker_PNG36.png',
     description: 'Intelligent 360° sound. Fill any room.',
     colors: ['#8B7355', '#2F2F2F'],
+    letter: 'BL',
   },
   {
     id: 'beolab-28',
     name: 'Beolab 28',
     subtitle: 'Hi-Fidelity',
-    price: '$22,050.00',
-    image: 'https://images.unsplash.com/photo-1593078165899-c7d2ac0d6aea?w=800&auto=format&fit=crop&q=60',
+    price: '$22,050',
+    image: 'https://pngimg.com/uploads/loudspeaker/loudspeaker_PNG101569.png',
     description: 'Wall mounted or floor-standing. Redefined.',
     colors: ['#C0C0C0', '#2F2F2F', '#D4B896'],
+    letter: '28',
   },
 ];
 
@@ -56,9 +62,9 @@ function ColorDot({ color }: { color: string }) {
   return <div className="color-dot" style={{ background: color }} />;
 }
 
-function ArrowGraphic({ style = {} }: { style?: React.CSSProperties }) {
+function ArrowGraphic({ dark = false }: { dark?: boolean }) {
   return (
-    <svg className="arrow-graphic" viewBox="0 0 20 60" style={style}>
+    <svg className="arrow-graphic" viewBox="0 0 20 60" style={{ stroke: dark ? 'var(--accent-orange)' : 'black' }}>
       <line x1="10" y1="0" x2="10" y2="55" />
       <line x1="10" y1="55" x2="2" y2="45" />
       <line x1="10" y1="55" x2="18" y2="45" />
@@ -72,24 +78,13 @@ export default function SpeakersPage() {
 
   return (
     <>
-      <Navigation activeLink="shop" />
+      <Navigation activeLink="speakers" />
 
       <main>
-        {/* Page Header */}
-        <div style={{ gridColumn: 'span 12', marginBottom: 20 }}>
-          <div className="label text-orange" style={{ marginBottom: 10 }}>Collection</div>
-          <h1 style={{ fontSize: '4rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '-0.03em', lineHeight: 0.9 }}>
-            Speakers
-          </h1>
-          <p style={{ marginTop: 15, fontSize: '1rem', color: '#666', maxWidth: 600 }}>
-            From iconic wireless speakers to our flagship Beolab series, discover sound perfection crafted for those who demand the extraordinary.
-          </p>
-        </div>
-
         {/* Featured Speaker - Hero Card */}
         {featuredSpeaker && (
-          <Link href={`/product/${featuredSpeaker.id}`} className="card dark hero-span" style={{ height: '60vh', textDecoration: 'none', color: 'inherit' }}>
-            <div className="giant-letter" style={{ fontSize: '25rem' }}>90</div>
+          <Link href={`/product/${featuredSpeaker.id}`} className="card dark hero-span" style={{ height: '75vh', textDecoration: 'none', color: 'inherit' }}>
+            <div className="giant-letter" style={{ fontSize: 'clamp(15rem, 30vw, 35rem)' }}>{featuredSpeaker.letter}</div>
             <div className="hero-visual">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
@@ -99,23 +94,35 @@ export default function SpeakersPage() {
               />
             </div>
             <div className="hero-content" style={{ gridColumn: 1 }}>
-              <div className="label text-orange">Featured</div>
-              <h2 className="overlay-text">
-                {featuredSpeaker.name.split(' ')[0]}<br />
-                <span className="text-orange">{featuredSpeaker.name.split(' ')[1]}</span>
-              </h2>
+              <div className="label text-orange">Flagship Innovation</div>
+              <h1 className="overlay-text" style={{ fontSize: 'clamp(2rem, 5vw, 3.5rem)' }}>
+                THE SHAPE<br />
+                OF SOUND<br />
+                <span className="text-orange">REDEFINED</span>
+              </h1>
             </div>
             <div className="hero-content" style={{ gridColumn: 2, alignItems: 'flex-end', textAlign: 'right' }}>
-              <div className="price-tag">
-                <span className="label">From</span><br />
+              <div className="price-tag" style={{ position: 'relative', top: 'auto', right: 'auto' }}>
+                <span className="label">MSRP</span><br />
                 {featuredSpeaker.price}
               </div>
-              <div className="desc-block">
-                {featuredSpeaker.description}
+              <div className="desc-block" style={{ marginTop: 20 }}>
+                {featuredSpeaker.description}. Active Room Compensation meets visionary design.
               </div>
             </div>
           </Link>
         )}
+
+        {/* Section Header */}
+        <div style={{ gridColumn: 'span 12', marginTop: 20, marginBottom: 10 }}>
+          <div className="label text-orange" style={{ marginBottom: 10 }}>Collection</div>
+          <h2 style={{ fontSize: 'clamp(2rem, 4vw, 3rem)', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '-0.03em', lineHeight: 0.9 }}>
+            Speakers
+          </h2>
+          <p style={{ marginTop: 15, fontSize: '1rem', color: '#666', maxWidth: 600 }}>
+            From iconic wireless speakers to our flagship Beolab series, discover sound perfection.
+          </p>
+        </div>
 
         {/* Product Grid */}
         {otherSpeakers.map((speaker, index) => {
@@ -130,7 +137,7 @@ export default function SpeakersPage() {
               className={`card ${isDark ? 'dark' : 'light'} product-span`}
               style={{ backgroundColor: bgColor, textDecoration: 'none', color: 'inherit' }}
             >
-              <div className="price-tag" style={{ color: isDark ? 'var(--accent-orange)' : 'inherit' }}>
+              <div className="price-tag" style={{ color: isDark ? 'var(--accent-orange)' : 'inherit', fontFamily: 'monospace', fontWeight: 600 }}>
                 {speaker.price}
               </div>
               
@@ -141,9 +148,17 @@ export default function SpeakersPage() {
                 />
               )}
               
-              <h2 className="overlay-text" style={{ marginTop: 40, color: isDark ? 'white' : 'black' }}>
+              {isDark && (
+                <div style={{ position: 'absolute', top: 80, left: -10, fontSize: '10rem', fontWeight: 900, opacity: 0.1, pointerEvents: 'none' }}>
+                  {speaker.letter}
+                </div>
+              )}
+              
+              <div className="vertical-text">{speaker.subtitle}</div>
+              
+              <h2 className="overlay-text" style={{ marginTop: 40, color: isDark ? 'white' : 'black', fontSize: 'clamp(1.8rem, 3vw, 2.5rem)' }}>
                 {speaker.name.split(' ')[0]}<br />
-                <span className="text-orange">{speaker.name.split(' ')[1] || speaker.subtitle}</span>
+                <span className="text-orange">{speaker.name.split(' ').slice(1).join(' ')}</span>
               </h2>
               
               {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -155,9 +170,6 @@ export default function SpeakersPage() {
               />
               
               <div style={{ zIndex: 3, marginTop: 'auto' }}>
-                <div className="label" style={{ marginBottom: 5, color: isDark ? '#888' : 'inherit' }}>
-                  {speaker.subtitle}
-                </div>
                 <div className="desc-block" style={{ color: isDark ? '#888' : '#666' }}>
                   {speaker.description}
                 </div>
@@ -168,14 +180,55 @@ export default function SpeakersPage() {
                       <ColorDot color={color} />
                     </div>
                   ))}
+                  <div className="pill filled" style={{ background: isDark ? 'white' : 'black', color: isDark ? 'black' : 'white', borderColor: isDark ? 'white' : 'black' }}>
+                    View
+                  </div>
                 </div>
               </div>
               
-              <ArrowGraphic style={{ stroke: isDark ? 'var(--accent-orange)' : 'black' }} />
+              <ArrowGraphic dark={isDark} />
             </Link>
           );
         })}
+
+        {/* Newsletter */}
+        <div className="card dark" style={{ gridColumn: 'span 12', padding: 60, display: 'flex', flexDirection: 'row', alignItems: 'center', marginTop: 20 }}>
+          <div style={{ flex: 1 }}>
+            <div className="label text-orange">Newsletter</div>
+            <h2 style={{ fontSize: 'clamp(1.5rem, 4vw, 3rem)', marginTop: 15, fontWeight: 800, textTransform: 'uppercase', lineHeight: 0.9 }}>
+              Join The<br />Audiophile Club
+            </h2>
+          </div>
+          <div style={{ flex: 1, display: 'flex', gap: 15, justifyContent: 'flex-end', flexWrap: 'wrap' }}>
+            <input
+              type="email"
+              placeholder="ENTER EMAIL"
+              style={{
+                background: 'transparent',
+                border: '1px solid #333',
+                padding: '18px 20px',
+                color: 'white',
+                width: 280,
+                fontFamily: 'monospace',
+                textTransform: 'uppercase',
+              }}
+            />
+            <button style={{
+              background: 'var(--accent-orange)',
+              border: 'none',
+              padding: '18px 35px',
+              fontWeight: 800,
+              textTransform: 'uppercase',
+              cursor: 'pointer',
+              color: 'white',
+            }}>
+              Subscribe
+            </button>
+          </div>
+        </div>
       </main>
+
+      <Footer />
     </>
   );
 }

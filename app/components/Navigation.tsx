@@ -38,7 +38,7 @@ const CloseIcon = () => (
 );
 
 interface NavigationProps {
-  activeLink?: 'shop' | 'support';
+  activeLink?: 'shop' | 'speakers' | 'headphones' | 'televisions' | 'support';
 }
 
 export function Navigation({ activeLink }: NavigationProps) {

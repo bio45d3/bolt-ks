@@ -3,12 +3,7 @@
 import Link from 'next/link';
 import { useState } from 'react';
 import { Navigation } from '@/components/Navigation';
-
-const CheckIcon = () => (
-  <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--accent-orange)" strokeWidth="2">
-    <polyline points="20 6 9 17 4 12" />
-  </svg>
-);
+import { Footer } from '@/components/Footer';
 
 const faqs = [
   {
@@ -37,6 +32,13 @@ const faqs = [
   },
 ];
 
+const quickLinks = [
+  { icon: '📦', title: 'Track Order', desc: 'Check your order status', letter: '01' },
+  { icon: '🔧', title: 'Repairs', desc: 'Schedule a repair', letter: '02' },
+  { icon: '📱', title: 'App Support', desc: 'Get help with the app', letter: '03' },
+  { icon: '📍', title: 'Find Store', desc: 'Visit our showroom', letter: '04' },
+];
+
 export default function SupportPage() {
   const [openFaq, setOpenFaq] = useState<number | null>(null);
   const [formData, setFormData] = useState({
@@ -54,52 +56,65 @@ export default function SupportPage() {
     setTimeout(() => setSubmitted(false), 5000);
   };
 
-  const inputStyle: React.CSSProperties = {
-    width: '100%',
-    padding: '16px 20px',
-    border: '1px solid #ddd',
-    fontSize: '1rem',
-    fontFamily: 'inherit',
-    outline: 'none',
-    marginBottom: 15,
-  };
-
   return (
     <>
       <Navigation activeLink="support" />
 
       <main>
-        {/* Page Header */}
-        <div style={{ gridColumn: 'span 12', marginBottom: 40 }}>
-          <div className="label text-orange" style={{ marginBottom: 10 }}>Help Center</div>
-          <h1 style={{ fontSize: '4rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '-0.03em', lineHeight: 0.9 }}>
-            Support
-          </h1>
-          <p style={{ marginTop: 15, fontSize: '1rem', color: '#666', maxWidth: 600 }}>
-            We&apos;re here to help you get the most out of your Bang & Olufsen products.
-          </p>
+        {/* Hero Header */}
+        <div className="card dark" style={{ gridColumn: 'span 12', height: '40vh', minHeight: 300, position: 'relative', overflow: 'hidden', marginBottom: 20 }}>
+          <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', fontSize: 'clamp(8rem, 20vw, 18rem)', fontWeight: 900, color: 'var(--accent-orange)', opacity: 0.15, pointerEvents: 'none' }}>
+            HELP
+          </div>
+          <div className="hero-content" style={{ height: '100%', justifyContent: 'center' }}>
+            <div className="label text-orange" style={{ marginBottom: 15 }}>Help Center</div>
+            <h1 className="overlay-text" style={{ fontSize: 'clamp(2.5rem, 6vw, 4rem)', marginBottom: 15 }}>
+              WE&apos;RE HERE<br />
+              <span className="text-orange">TO HELP</span>
+            </h1>
+            <p style={{ color: '#888', maxWidth: 500, fontSize: '1rem' }}>
+              Get the most out of your premium audio experience.
+            </p>
+          </div>
         </div>
 
         {/* Quick Links */}
-        <div style={{ gridColumn: 'span 12', display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 20, marginBottom: 40 }}>
-          {[
-            { icon: '📦', title: 'Track Order', desc: 'Check your order status' },
-            { icon: '🔧', title: 'Repairs', desc: 'Schedule a repair' },
-            { icon: '📱', title: 'App Support', desc: 'Get help with the app' },
-            { icon: '📍', title: 'Find Store', desc: 'Visit our showroom' },
-          ].map((item, i) => (
-            <div key={i} className="card light" style={{ padding: 30, textAlign: 'center', cursor: 'pointer' }}>
-              <div style={{ fontSize: '2.5rem', marginBottom: 15 }}>{item.icon}</div>
-              <h3 style={{ fontWeight: 800, textTransform: 'uppercase', marginBottom: 5 }}>{item.title}</h3>
-              <p style={{ color: '#666', fontSize: '0.9rem' }}>{item.desc}</p>
+        {quickLinks.map((item, i) => (
+          <div 
+            key={i} 
+            className={`card ${i % 2 === 0 ? 'light' : 'dark'}`}
+            style={{ 
+              gridColumn: 'span 3', 
+              height: 220, 
+              padding: 25, 
+              cursor: 'pointer',
+              position: 'relative',
+              overflow: 'hidden',
+            }}
+          >
+            <div style={{ 
+              position: 'absolute', 
+              bottom: -20, 
+              right: -10, 
+              fontSize: '8rem', 
+              fontWeight: 900, 
+              opacity: 0.1,
+              pointerEvents: 'none',
+              color: i % 2 === 0 ? 'black' : 'var(--accent-orange)',
+            }}>
+              {item.letter}
             </div>
-          ))}
-        </div>
+            <div style={{ fontSize: '2.5rem', marginBottom: 15, zIndex: 2, position: 'relative' }}>{item.icon}</div>
+            <h3 style={{ fontWeight: 800, textTransform: 'uppercase', marginBottom: 8, fontSize: '1.1rem' }}>{item.title}</h3>
+            <p style={{ color: i % 2 === 0 ? '#666' : '#888', fontSize: '0.85rem' }}>{item.desc}</p>
+          </div>
+        ))}
 
         {/* FAQ Section */}
-        <div style={{ gridColumn: 'span 7' }}>
-          <h2 style={{ fontSize: '2rem', fontWeight: 800, textTransform: 'uppercase', marginBottom: 30 }}>
-            Frequently Asked Questions
+        <div style={{ gridColumn: 'span 7', marginTop: 20 }}>
+          <div className="label text-orange" style={{ marginBottom: 10 }}>Questions</div>
+          <h2 style={{ fontSize: 'clamp(1.8rem, 3vw, 2.5rem)', fontWeight: 800, textTransform: 'uppercase', marginBottom: 30, lineHeight: 0.9 }}>
+            Frequently<br />Asked
           </h2>
 
           {faqs.map((faq, index) => (
@@ -110,8 +125,14 @@ export default function SupportPage() {
               onClick={() => setOpenFaq(openFaq === index ? null : index)}
             >
               <div style={{ padding: '20px 30px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <h3 style={{ fontWeight: 700, fontSize: '1rem' }}>{faq.question}</h3>
-                <span style={{ fontSize: '1.5rem', color: 'var(--accent-orange)', transform: openFaq === index ? 'rotate(45deg)' : 'none', transition: 'transform 0.3s ease' }}>
+                <h3 style={{ fontWeight: 700, fontSize: '0.95rem', flex: 1, paddingRight: 20 }}>{faq.question}</h3>
+                <span style={{ 
+                  fontSize: '1.5rem', 
+                  color: 'var(--accent-orange)', 
+                  transform: openFaq === index ? 'rotate(45deg)' : 'none', 
+                  transition: 'transform 0.3s ease',
+                  flexShrink: 0,
+                }}>
                   +
                 </span>
               </div>
@@ -125,51 +146,93 @@ export default function SupportPage() {
         </div>
 
         {/* Contact Form */}
-        <div style={{ gridColumn: 'span 5' }}>
+        <div style={{ gridColumn: 'span 5', marginTop: 20 }}>
           <div className="card dark" style={{ padding: 40 }}>
-            <h2 style={{ fontSize: '1.5rem', fontWeight: 800, textTransform: 'uppercase', marginBottom: 30 }}>
-              Contact Us
+            <div className="label text-orange" style={{ marginBottom: 10 }}>Get in Touch</div>
+            <h2 style={{ fontSize: 'clamp(1.5rem, 2.5vw, 2rem)', fontWeight: 800, textTransform: 'uppercase', marginBottom: 30, lineHeight: 0.9 }}>
+              Contact<br />Us
             </h2>
 
             {submitted ? (
               <div style={{ textAlign: 'center', padding: 40 }}>
-                <div style={{ marginBottom: 15 }}><CheckIcon /></div>
-                <h3 style={{ fontWeight: 800, marginBottom: 10 }}>Message Sent!</h3>
+                <div style={{ fontSize: '3rem', marginBottom: 15 }}>✓</div>
+                <h3 style={{ fontWeight: 800, marginBottom: 10, textTransform: 'uppercase' }}>Message Sent!</h3>
                 <p style={{ color: '#888' }}>We&apos;ll get back to you within 24 hours.</p>
               </div>
             ) : (
               <form onSubmit={handleSubmit}>
                 <input
                   type="text"
-                  placeholder="Your Name"
+                  placeholder="YOUR NAME"
                   value={formData.name}
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                   required
-                  style={{ ...inputStyle, background: '#2a2a2a', border: '1px solid #333', color: 'white' }}
+                  style={{ 
+                    width: '100%', 
+                    padding: '16px 20px', 
+                    marginBottom: 15,
+                    background: '#2a2a2a', 
+                    border: '1px solid #333', 
+                    color: 'white',
+                    fontFamily: 'monospace',
+                    textTransform: 'uppercase',
+                    fontSize: '0.85rem',
+                  }}
                 />
                 <input
                   type="email"
-                  placeholder="Email Address"
+                  placeholder="EMAIL ADDRESS"
                   value={formData.email}
                   onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                   required
-                  style={{ ...inputStyle, background: '#2a2a2a', border: '1px solid #333', color: 'white' }}
+                  style={{ 
+                    width: '100%', 
+                    padding: '16px 20px', 
+                    marginBottom: 15,
+                    background: '#2a2a2a', 
+                    border: '1px solid #333', 
+                    color: 'white',
+                    fontFamily: 'monospace',
+                    textTransform: 'uppercase',
+                    fontSize: '0.85rem',
+                  }}
                 />
                 <input
                   type="text"
-                  placeholder="Subject"
+                  placeholder="SUBJECT"
                   value={formData.subject}
                   onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
                   required
-                  style={{ ...inputStyle, background: '#2a2a2a', border: '1px solid #333', color: 'white' }}
+                  style={{ 
+                    width: '100%', 
+                    padding: '16px 20px', 
+                    marginBottom: 15,
+                    background: '#2a2a2a', 
+                    border: '1px solid #333', 
+                    color: 'white',
+                    fontFamily: 'monospace',
+                    textTransform: 'uppercase',
+                    fontSize: '0.85rem',
+                  }}
                 />
                 <textarea
-                  placeholder="Your Message"
+                  placeholder="YOUR MESSAGE"
                   value={formData.message}
                   onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                   required
                   rows={5}
-                  style={{ ...inputStyle, background: '#2a2a2a', border: '1px solid #333', color: 'white', resize: 'vertical' }}
+                  style={{ 
+                    width: '100%', 
+                    padding: '16px 20px', 
+                    marginBottom: 15,
+                    background: '#2a2a2a', 
+                    border: '1px solid #333', 
+                    color: 'white',
+                    fontFamily: 'monospace',
+                    textTransform: 'uppercase',
+                    fontSize: '0.85rem',
+                    resize: 'vertical',
+                  }}
                 />
                 <button
                   type="submit"
@@ -179,7 +242,7 @@ export default function SupportPage() {
                     background: 'var(--accent-orange)',
                     border: 'none',
                     color: 'white',
-                    fontSize: '1rem',
+                    fontSize: '0.9rem',
                     fontWeight: 800,
                     textTransform: 'uppercase',
                     cursor: 'pointer',
@@ -192,29 +255,64 @@ export default function SupportPage() {
           </div>
 
           {/* Store Location */}
-          <div className="card light" style={{ padding: 30, marginTop: 20 }}>
-            <h3 style={{ fontWeight: 800, textTransform: 'uppercase', marginBottom: 15 }}>
-              📍 Our Showroom
-            </h3>
-            <p style={{ lineHeight: 1.6, marginBottom: 15 }}>
-              <strong>Bolt KS</strong><br />
-              Rr. Agim Ramadani 15<br />
-              10000 Pristina, Kosovo
-            </p>
-            <p style={{ color: '#666', fontSize: '0.9rem', marginBottom: 15 }}>
-              <strong>Hours:</strong><br />
-              Mon-Fri: 10:00 - 19:00<br />
-              Sat: 10:00 - 17:00<br />
-              Sun: Closed
-            </p>
-            <p style={{ color: '#666', fontSize: '0.9rem' }}>
-              <strong>Contact:</strong><br />
-              +383 44 123 456<br />
-              info@bolt-ks.com
-            </p>
+          <div className="card light" style={{ padding: 30, marginTop: 15, position: 'relative', overflow: 'hidden' }}>
+            <div className="orange-shape shape-circle" style={{ width: '50%', paddingBottom: '50%', right: '-15%', left: 'auto', top: '-20%', opacity: 0.3 }} />
+            <div style={{ zIndex: 2, position: 'relative' }}>
+              <div className="label text-orange" style={{ marginBottom: 10 }}>Visit Us</div>
+              <h3 style={{ fontWeight: 800, textTransform: 'uppercase', marginBottom: 15, fontSize: '1.3rem' }}>
+                Our Showroom
+              </h3>
+              <p style={{ lineHeight: 1.6, marginBottom: 15 }}>
+                <strong>Bolt KS</strong><br />
+                Rr. Agim Ramadani 15<br />
+                10000 Pristina, Kosovo
+              </p>
+              <p style={{ color: '#666', fontSize: '0.85rem', marginBottom: 15, lineHeight: 1.6 }}>
+                <strong>Hours:</strong><br />
+                Mon-Fri: 10:00 - 19:00<br />
+                Sat: 10:00 - 17:00<br />
+                Sun: Closed
+              </p>
+              <p style={{ color: '#666', fontSize: '0.85rem', lineHeight: 1.6 }}>
+                <strong>Contact:</strong><br />
+                +383 44 123 456<br />
+                info@bolt-ks.com
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* CTA Banner */}
+        <div className="card dark" style={{ gridColumn: 'span 12', padding: 60, display: 'flex', flexDirection: 'row', alignItems: 'center', marginTop: 20, position: 'relative', overflow: 'hidden' }}>
+          <div style={{ position: 'absolute', right: -30, top: '50%', transform: 'translateY(-50%)', fontSize: '12rem', fontWeight: 900, opacity: 0.1, pointerEvents: 'none', color: 'var(--accent-orange)' }}>
+            B&O
+          </div>
+          <div style={{ flex: 1, zIndex: 2 }}>
+            <div className="label text-orange">Experience</div>
+            <h2 style={{ fontSize: 'clamp(1.5rem, 4vw, 3rem)', marginTop: 15, fontWeight: 800, textTransform: 'uppercase', lineHeight: 0.9 }}>
+              Premium<br />Audio Awaits
+            </h2>
+          </div>
+          <div style={{ zIndex: 2 }}>
+            <Link
+              href="/shop"
+              style={{
+                display: 'inline-block',
+                padding: '20px 40px',
+                background: 'var(--accent-orange)',
+                color: 'white',
+                textDecoration: 'none',
+                fontWeight: 800,
+                textTransform: 'uppercase',
+              }}
+            >
+              Shop Now
+            </Link>
           </div>
         </div>
       </main>
+
+      <Footer />
     </>
   );
 }

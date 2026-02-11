@@ -17,7 +17,11 @@ export async function GET(
       return NextResponse.json({ error: 'Product not found' }, { status: 404 });
     }
 
-    return NextResponse.json(product);
+    return NextResponse.json({
+      ...product,
+      price: product.price ? Number(product.price) : null,
+      compareAt: product.compareAt ? Number(product.compareAt) : null,
+    });
   } catch (error) {
     console.error('Error fetching product:', error);
     return NextResponse.json({ error: 'Failed to fetch product' }, { status: 500 });
@@ -38,16 +42,20 @@ export async function PUT(
         sku: body.sku,
         name: body.name,
         slug: body.slug,
+        subtitle: body.subtitle,
         description: body.description,
+        longDescription: body.longDescription,
+        brand: body.brand,
         categoryId: body.categoryId,
-        price: body.price,
-        compareAt: body.compareAt,
-        images: body.images,
-        colors: body.colors,
-        specs: body.specs,
-        featured: body.featured,
-        inStock: body.inStock,
-        stockCount: body.stockCount,
+        price: body.price !== null && body.price !== '' ? body.price : null,
+        compareAt: body.compareAt !== null && body.compareAt !== '' ? body.compareAt : null,
+        contactOnly: body.contactOnly || false,
+        images: body.images || [],
+        colors: body.colors || [],
+        specs: body.specs || {},
+        featured: body.featured || false,
+        inStock: body.inStock ?? true,
+        stockCount: body.stockCount || 0,
       },
     });
 
@@ -56,6 +64,9 @@ export async function PUT(
     console.error('Error updating product:', error);
     if (error.code === 'P2025') {
       return NextResponse.json({ error: 'Product not found' }, { status: 404 });
+    }
+    if (error.code === 'P2002') {
+      return NextResponse.json({ error: 'SKU or slug already exists' }, { status: 400 });
     }
     return NextResponse.json({ error: 'Failed to update product' }, { status: 500 });
   }

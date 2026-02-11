@@ -3,246 +3,318 @@
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
 import { Navigation } from '@/components/Navigation';
+import { Footer } from '@/components/Footer';
 
-type BrandFilter = 'all' | 'bang-olufsen' | 'devialet' | 'loewe';
-type BrandName = 'bang-olufsen' | 'devialet' | 'loewe';
-type Category = 'all' | 'speakers' | 'headphones' | 'televisions' | 'soundbars';
+type BrandFilter = 'all' | 'BANG_OLUFSEN' | 'DEVIALET' | 'LOEWE';
+type Category = 'all' | 'speakers' | 'headphones' | 'televisions' | 'soundbars' | 'accessories';
 
 interface Product {
   id: string;
   name: string;
-  subtitle: string;
-  price: number | null;
-  image: string;
-  brand: BrandName;
-  category: Exclude<Category, 'all'>;
-  colors: string[];
+  slug: string;
+  description: string;
+  subtitle?: string;
+  price: number;
+  compareAt?: number;
+  images: string[];
+  colors: { hex: string; name: string }[];
+  category: string;
+  categorySlug: string;
+  brand?: 'BANG_OLUFSEN' | 'DEVIALET' | 'LOEWE';
   contactOnly?: boolean;
+  featured: boolean;
+  inStock: boolean;
 }
 
-// Mock data - will be replaced with API calls
-const products: Product[] = [
-  // Bang & Olufsen
-  { id: 'beosound-2', name: 'Beosound 2', subtitle: 'Elegant Home Speaker', price: 4000, image: 'https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?w=600', brand: 'bang-olufsen', category: 'speakers', colors: ['#C6A665', '#2F2F2F', '#C0C0C0'] },
-  { id: 'beosound-a9', name: 'Beosound A9', subtitle: 'Iconic Design', price: 4550, image: 'https://images.unsplash.com/photo-1545454675-3531b543be5d?w=600', brand: 'bang-olufsen', category: 'speakers', colors: ['#1E3A5F', '#C6A665', '#2F2F2F'] },
-  { id: 'beoplay-h95', name: 'Beoplay H95', subtitle: 'Premium ANC', price: 1250, image: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=600', brand: 'bang-olufsen', category: 'headphones', colors: ['#000000', '#C6A665', '#808080'] },
-  { id: 'beovision-harmony', name: 'Beovision Harmony', subtitle: '77" OLED', price: 18590, image: 'https://images.unsplash.com/photo-1593359677879-a4bb92f829d1?w=600', brand: 'bang-olufsen', category: 'televisions', colors: ['#8B4513', '#C0C0C0'] },
-  { id: 'beolab-28', name: 'Beolab 28', subtitle: 'Hi-Fidelity', price: 22050, image: 'https://images.unsplash.com/photo-1593078165899-c7d2ac0d6aea?w=600', brand: 'bang-olufsen', category: 'speakers', colors: ['#C0C0C0', '#2F2F2F'] },
-  
-  // Devialet
-  { id: 'phantom-i', name: 'Phantom I', subtitle: '108 dB Speaker', price: 3200, image: 'https://images.unsplash.com/photo-1545454675-3531b543be5d?w=600', brand: 'devialet', category: 'speakers', colors: ['#FFFFFF', '#000000', '#C6A665'] },
-  { id: 'phantom-ii', name: 'Phantom II', subtitle: '98 dB Compact', price: 1400, image: 'https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?w=600', brand: 'devialet', category: 'speakers', colors: ['#FFFFFF', '#000000'] },
-  { id: 'dione', name: 'Dione', subtitle: 'Soundbar', price: 2490, image: 'https://images.unsplash.com/photo-1558089687-f282ffcbc126?w=600', brand: 'devialet', category: 'soundbars', colors: ['#000000'] },
-  { id: 'gemini-ii', name: 'Gemini II', subtitle: 'True Wireless', price: 399, image: 'https://images.unsplash.com/photo-1590658268037-6bf12165a8df?w=600', brand: 'devialet', category: 'headphones', colors: ['#000000', '#FFFFFF'] },
-  
-  // Loewe
-  { id: 'stellar', name: 'Stellar', subtitle: '77" OLED TV', price: null, image: 'https://images.unsplash.com/photo-1593359677879-a4bb92f829d1?w=600', brand: 'loewe', category: 'televisions', colors: ['#2F2F2F'], contactOnly: true },
-  { id: 'iconic', name: 'Iconic', subtitle: '55" OLED TV', price: null, image: 'https://images.unsplash.com/photo-1461151304267-38535e780c79?w=600', brand: 'loewe', category: 'televisions', colors: ['#C0C0C0', '#000000'], contactOnly: true },
-  { id: 'klang-bar-i', name: 'Klang Bar i', subtitle: 'Soundbar', price: 1490, image: 'https://images.unsplash.com/photo-1558089687-f282ffcbc126?w=600', brand: 'loewe', category: 'soundbars', colors: ['#2F2F2F', '#C0C0C0'] },
-  { id: 'klang-s1', name: 'Klang S1', subtitle: 'Subwoofer', price: 990, image: 'https://images.unsplash.com/photo-1593078165899-c7d2ac0d6aea?w=600', brand: 'loewe', category: 'speakers', colors: ['#2F2F2F'] },
-];
-
 const brandInfo = {
-  'bang-olufsen': { name: 'Bang & Olufsen', logo: 'B&O', color: '#000000', country: 'Denmark' },
-  'devialet': { name: 'Devialet', logo: 'DEVIALET', color: '#000000', country: 'France' },
-  'loewe': { name: 'Loewe', logo: 'LOEWE', color: '#000000', country: 'Germany' },
+  'BANG_OLUFSEN': { name: 'Bang & Olufsen', abbr: 'B&O', country: 'Denmark' },
+  'DEVIALET': { name: 'Devialet', abbr: 'DEV', country: 'France' },
+  'LOEWE': { name: 'Loewe', abbr: 'LW', country: 'Germany' },
 };
 
 function ColorDot({ color }: { color: string }) {
-  return <div style={{ width: 12, height: 12, borderRadius: '50%', background: color, border: '1px solid rgba(0,0,0,0.1)' }} />;
+  return <div className="color-dot" style={{ background: color }} />;
+}
+
+function ArrowGraphic({ dark = false }: { dark?: boolean }) {
+  return (
+    <svg className="arrow-graphic" viewBox="0 0 20 60" style={{ stroke: dark ? 'var(--accent-orange)' : 'black' }}>
+      <line x1="10" y1="0" x2="10" y2="55" />
+      <line x1="10" y1="55" x2="2" y2="45" />
+      <line x1="10" y1="55" x2="18" y2="45" />
+    </svg>
+  );
 }
 
 export default function ShopPage() {
+  const [products, setProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
   const [selectedBrand, setSelectedBrand] = useState<BrandFilter>('all');
   const [selectedCategory, setSelectedCategory] = useState<Category>('all');
-  const [sortBy, setSortBy] = useState<'featured' | 'price-asc' | 'price-desc' | 'name'>('featured');
+
+  useEffect(() => {
+    async function fetchProducts() {
+      try {
+        const res = await fetch('/api/products');
+        if (res.ok) {
+          const data = await res.json();
+          setProducts(data);
+        }
+      } catch (error) {
+        console.error('Failed to fetch products:', error);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchProducts();
+  }, []);
 
   const filteredProducts = products
     .filter(p => selectedBrand === 'all' || p.brand === selectedBrand)
-    .filter(p => selectedCategory === 'all' || p.category === selectedCategory)
-    .sort((a, b) => {
-      if (sortBy === 'price-asc') return (a.price ?? 999999) - (b.price ?? 999999);
-      if (sortBy === 'price-desc') return (b.price ?? 0) - (a.price ?? 0);
-      if (sortBy === 'name') return a.name.localeCompare(b.name);
-      return 0;
-    });
+    .filter(p => selectedCategory === 'all' || p.categorySlug === selectedCategory);
 
-  const categories = ['all', 'speakers', 'headphones', 'televisions', 'soundbars'] as const;
-  const brands = ['all', 'bang-olufsen', 'devialet', 'loewe'] as const;
+  const categories = ['all', 'speakers', 'headphones', 'televisions', 'soundbars', 'accessories'] as const;
+  const brands = ['all', 'BANG_OLUFSEN', 'DEVIALET', 'LOEWE'] as const;
+
+  // Derive brand from SKU prefix if not set
+  function getBrand(product: Product): 'BANG_OLUFSEN' | 'DEVIALET' | 'LOEWE' | null {
+    if (product.brand) return product.brand;
+    // Fallback: check name patterns
+    const name = product.name.toLowerCase();
+    if (name.includes('beo') || name.includes('b&o')) return 'BANG_OLUFSEN';
+    if (name.includes('phantom') || name.includes('devialet') || name.includes('mania') || name.includes('dione') || name.includes('gemini')) return 'DEVIALET';
+    if (name.includes('klang') || name.includes('stellar') || name.includes('iconic') || name.includes('we.') || name.includes('bild') || name.includes('inspire')) return 'LOEWE';
+    return null;
+  }
 
   return (
     <>
-      <Navigation />
+      <Navigation activeLink="shop" />
 
-      <main style={{ paddingTop: 100 }}>
-        {/* Page Header */}
-        <div style={{ gridColumn: 'span 12', marginBottom: 30 }}>
-          <div className="label text-orange" style={{ marginBottom: 10 }}>Premium Audio & TV</div>
-          <h1 style={{ fontSize: 'clamp(2.5rem, 5vw, 4rem)', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '-0.03em', lineHeight: 0.9 }}>
-            Shop All Products
-          </h1>
-          <p style={{ marginTop: 15, fontSize: '1rem', color: '#666', maxWidth: 600 }}>
-            Explore our curated selection of premium audio and television products from the world&apos;s finest brands.
-          </p>
+      <main>
+        {/* Hero Header */}
+        <div className="card dark" style={{ gridColumn: 'span 12', height: '40vh', minHeight: 300, position: 'relative', overflow: 'hidden', marginBottom: 20 }}>
+          <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', fontSize: 'clamp(8rem, 20vw, 20rem)', fontWeight: 900, color: 'var(--accent-orange)', opacity: 0.15, pointerEvents: 'none' }}>
+            SHOP
+          </div>
+          <div className="hero-content" style={{ height: '100%', justifyContent: 'center' }}>
+            <div className="label text-orange" style={{ marginBottom: 15 }}>Premium Audio & Television</div>
+            <h1 className="overlay-text" style={{ fontSize: 'clamp(2.5rem, 6vw, 5rem)', marginBottom: 15 }}>
+              ALL<br />
+              <span className="text-orange">PRODUCTS</span>
+            </h1>
+            <p style={{ color: '#888', maxWidth: 500, fontSize: '1rem' }}>
+              Explore our curated selection from Bang & Olufsen, Devialet, and Loewe.
+            </p>
+          </div>
         </div>
 
         {/* Brand Filter Pills */}
-        <div style={{ gridColumn: 'span 12', display: 'flex', gap: 10, flexWrap: 'wrap', marginBottom: 20 }}>
-          {brands.map(brand => (
-            <button
-              key={brand}
-              onClick={() => setSelectedBrand(brand)}
-              style={{
-                padding: '12px 24px',
-                background: selectedBrand === brand ? 'var(--accent-orange)' : 'transparent',
-                border: selectedBrand === brand ? 'none' : '1px solid #ddd',
-                color: selectedBrand === brand ? 'white' : '#333',
-                fontWeight: 700,
-                textTransform: 'uppercase',
-                fontSize: '0.8rem',
-                cursor: 'pointer',
-                borderRadius: 4,
-              }}
-            >
-              {brand === 'all' ? 'All Brands' : brandInfo[brand].name}
-            </button>
-          ))}
+        <div style={{ gridColumn: 'span 12', marginBottom: 10 }}>
+          <div className="label" style={{ marginBottom: 15 }}>Filter by Brand</div>
+          <div className="pill-container" style={{ marginTop: 0 }}>
+            {brands.map(brand => (
+              <button
+                key={brand}
+                onClick={() => setSelectedBrand(brand)}
+                className="pill"
+                style={{
+                  background: selectedBrand === brand ? 'var(--accent-orange)' : 'transparent',
+                  borderColor: selectedBrand === brand ? 'var(--accent-orange)' : 'currentColor',
+                  color: selectedBrand === brand ? 'white' : 'inherit',
+                  cursor: 'pointer',
+                  padding: '10px 20px',
+                }}
+              >
+                {brand === 'all' ? 'All Brands' : brandInfo[brand].name}
+              </button>
+            ))}
+          </div>
         </div>
 
-        {/* Category & Sort Row */}
-        <div style={{ gridColumn: 'span 12', display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 30, flexWrap: 'wrap', gap: 15 }}>
-          <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
+        {/* Category Filter */}
+        <div style={{ gridColumn: 'span 12', marginBottom: 30, display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 15 }}>
+          <div className="pill-container" style={{ marginTop: 0 }}>
             {categories.map(cat => (
               <button
                 key={cat}
                 onClick={() => setSelectedCategory(cat)}
+                className="pill"
                 style={{
-                  padding: '8px 16px',
                   background: selectedCategory === cat ? '#000' : 'transparent',
-                  border: selectedCategory === cat ? 'none' : '1px solid #ddd',
-                  color: selectedCategory === cat ? 'white' : '#666',
-                  fontWeight: 600,
-                  fontSize: '0.75rem',
-                  textTransform: 'uppercase',
+                  borderColor: selectedCategory === cat ? '#000' : 'currentColor',
+                  color: selectedCategory === cat ? 'white' : 'inherit',
                   cursor: 'pointer',
-                  borderRadius: 4,
+                  padding: '8px 16px',
+                  textTransform: 'capitalize',
                 }}
               >
                 {cat === 'all' ? 'All' : cat}
               </button>
             ))}
           </div>
-
-          <select
-            value={sortBy}
-            onChange={(e) => setSortBy(e.target.value as typeof sortBy)}
-            style={{
-              padding: '10px 15px',
-              border: '1px solid #ddd',
-              background: 'white',
-              fontSize: '0.85rem',
-              cursor: 'pointer',
-            }}
-          >
-            <option value="featured">Featured</option>
-            <option value="price-asc">Price: Low to High</option>
-            <option value="price-desc">Price: High to Low</option>
-            <option value="name">Name A-Z</option>
-          </select>
-        </div>
-
-        {/* Results Count */}
-        <div style={{ gridColumn: 'span 12', marginBottom: 20 }}>
           <span style={{ color: '#666', fontSize: '0.9rem' }}>
-            {filteredProducts.length} product{filteredProducts.length !== 1 ? 's' : ''}
+            {loading ? 'Loading...' : `${filteredProducts.length} product${filteredProducts.length !== 1 ? 's' : ''}`}
           </span>
         </div>
 
+        {/* Loading State */}
+        {loading && (
+          <div className="card light" style={{ gridColumn: 'span 12', textAlign: 'center', padding: 80 }}>
+            <div style={{ fontSize: '2rem', marginBottom: 20 }}>⏳</div>
+            <p style={{ color: '#666' }}>Loading products...</p>
+          </div>
+        )}
+
         {/* Product Grid */}
-        {filteredProducts.map((product) => (
-          <Link
-            key={product.id}
-            href={`/product/${product.id}`}
-            className="card light"
-            style={{
-              gridColumn: 'span 4',
-              padding: 0,
-              textDecoration: 'none',
-              color: 'inherit',
-              overflow: 'hidden',
-              display: 'flex',
-              flexDirection: 'column',
-            }}
-          >
-            {/* Image */}
-            <div style={{
-              height: 280,
-              background: '#f5f5f5',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              position: 'relative',
-            }}>
-              {/* Brand Badge */}
-              <div style={{
-                position: 'absolute',
-                top: 15,
-                left: 15,
-                padding: '4px 10px',
-                background: 'rgba(0,0,0,0.8)',
-                color: 'white',
-                fontSize: '0.65rem',
-                fontWeight: 700,
-                textTransform: 'uppercase',
-                letterSpacing: '0.05em',
-              }}>
-                {brandInfo[product.brand].name}
+        {!loading && filteredProducts.map((product, index) => {
+          const isDark = index % 3 === 1;
+          const bgColor = index % 3 === 2 ? '#D4D4D4' : undefined;
+          const shape = index % 2 === 0 ? 'rect' : 'circle';
+          const productBrand = getBrand(product);
+          const isContactOnly = product.contactOnly || product.price === 0;
+          const productImage = product.images?.[0] || 'https://pngimg.com/d/wireless_speaker_PNG18.png';
+          
+          return (
+            <Link 
+              href={`/product/${product.slug}`} 
+              key={product.id} 
+              className={`card ${isDark ? 'dark' : 'light'} product-span`}
+              style={{ 
+                backgroundColor: bgColor, 
+                textDecoration: 'none', 
+                color: 'inherit',
+                height: 500,
+              }}
+            >
+              <div className="price-tag" style={{ color: isDark ? 'var(--accent-orange)' : 'inherit', fontFamily: 'monospace', fontWeight: 600 }}>
+                {!isContactOnly && product.price > 0
+                  ? `€${product.price.toLocaleString()}`
+                  : <span style={{ color: 'var(--accent-orange)' }}>Contact Us</span>
+                }
               </div>
+              
+              {/* Brand badge */}
+              {productBrand && (
+                <div style={{ 
+                  position: 'absolute', 
+                  top: 25, 
+                  left: 25, 
+                  padding: '4px 10px', 
+                  background: isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.8)', 
+                  color: isDark ? '#888' : 'white', 
+                  fontSize: '0.6rem', 
+                  fontWeight: 700, 
+                  textTransform: 'uppercase',
+                  zIndex: 4,
+                  letterSpacing: '0.05em',
+                }}>
+                  {brandInfo[productBrand].name}
+                </div>
+              )}
+              
+              {!isDark && (
+                <div 
+                  className={`orange-shape shape-${shape}`} 
+                  style={shape === 'circle' ? { backgroundColor: 'white' } : undefined}
+                />
+              )}
+              
+              {isDark && (
+                <div style={{ 
+                  position: 'absolute', 
+                  top: 80, 
+                  left: -10, 
+                  fontSize: '8rem', 
+                  fontWeight: 900, 
+                  opacity: 0.1,
+                  pointerEvents: 'none',
+                }}>
+                  {product.name.split(' ')[1]?.substring(0, 2) || product.name.substring(0, 2)}
+                </div>
+              )}
+              
+              <h2 className="overlay-text" style={{ marginTop: 60, color: isDark ? 'white' : 'black', fontSize: '2rem' }}>
+                {product.name.split(' ')[0]}<br />
+                <span className="text-orange">{product.name.split(' ').slice(1).join(' ') || product.subtitle || ''}</span>
+              </h2>
               
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                src={product.image}
+                src={productImage}
                 alt={product.name}
-                style={{ maxWidth: '80%', maxHeight: '80%', objectFit: 'contain' }}
+                className="product-img"
+                style={{ width: '65%' }}
               />
-            </div>
-
-            {/* Info */}
-            <div style={{ padding: 20, flex: 1, display: 'flex', flexDirection: 'column' }}>
-              <div className="label" style={{ marginBottom: 5, color: '#888' }}>
-                {product.subtitle}
-              </div>
-              <h3 style={{ fontSize: '1.25rem', fontWeight: 800, marginBottom: 10, textTransform: 'uppercase' }}>
-                {product.name}
-              </h3>
               
-              {/* Colors */}
-              <div style={{ display: 'flex', gap: 6, marginBottom: 15 }}>
-                {product.colors.slice(0, 4).map((color, i) => (
-                  <ColorDot key={i} color={color} />
-                ))}
-              </div>
-
-              {/* Price */}
-              <div style={{ marginTop: 'auto', fontWeight: 800, fontSize: '1.1rem' }}>
-                {product.price && !product.contactOnly ? (
-                  `$${product.price.toLocaleString()}`
-                ) : (
-                  <span style={{ color: 'var(--accent-orange)' }}>Contact Us</span>
+              <div style={{ zIndex: 3, marginTop: 'auto' }}>
+                <div className="label" style={{ marginBottom: 5, color: isDark ? '#888' : 'inherit' }}>
+                  {product.subtitle || product.description?.substring(0, 40) || product.category}
+                </div>
+                
+                {product.colors && product.colors.length > 0 && (
+                  <div className="pill-container" style={{ marginTop: 10 }}>
+                    {product.colors.slice(0, 3).map((color, i) => (
+                      <div className="pill" key={i} style={{ padding: '6px 10px' }}>
+                        <ColorDot color={color.hex} />
+                      </div>
+                    ))}
+                  </div>
                 )}
               </div>
-            </div>
-          </Link>
-        ))}
+              
+              <ArrowGraphic dark={isDark} />
+            </Link>
+          );
+        })}
 
         {/* Empty State */}
-        {filteredProducts.length === 0 && (
-          <div style={{ gridColumn: 'span 12', textAlign: 'center', padding: 60 }}>
-            <h3 style={{ fontWeight: 800, marginBottom: 10 }}>No products found</h3>
+        {!loading && filteredProducts.length === 0 && (
+          <div className="card light" style={{ gridColumn: 'span 12', textAlign: 'center', padding: 80 }}>
+            <div style={{ fontSize: '4rem', marginBottom: 20, opacity: 0.3 }}>∅</div>
+            <h3 style={{ fontWeight: 800, marginBottom: 10, textTransform: 'uppercase' }}>No products found</h3>
             <p style={{ color: '#666' }}>Try adjusting your filters</p>
           </div>
         )}
+
+        {/* Newsletter */}
+        <div className="card dark" style={{ gridColumn: 'span 12', padding: 60, display: 'flex', flexDirection: 'row', alignItems: 'center', marginTop: 20 }}>
+          <div style={{ flex: 1 }}>
+            <div className="label text-orange">Newsletter</div>
+            <h2 style={{ fontSize: 'clamp(1.5rem, 4vw, 3rem)', marginTop: 15, fontWeight: 800, textTransform: 'uppercase', lineHeight: 0.9 }}>
+              Stay<br />Updated
+            </h2>
+          </div>
+          <div style={{ flex: 1, display: 'flex', gap: 15, justifyContent: 'flex-end', flexWrap: 'wrap' }}>
+            <input
+              type="email"
+              placeholder="ENTER EMAIL"
+              style={{
+                background: 'transparent',
+                border: '1px solid #333',
+                padding: '18px 20px',
+                color: 'white',
+                width: 280,
+                fontFamily: 'monospace',
+                textTransform: 'uppercase',
+              }}
+            />
+            <button style={{
+              background: 'var(--accent-orange)',
+              border: 'none',
+              padding: '18px 35px',
+              fontWeight: 800,
+              textTransform: 'uppercase',
+              cursor: 'pointer',
+              color: 'white',
+            }}>
+              Subscribe
+            </button>
+          </div>
+        </div>
       </main>
+
+      <Footer />
     </>
   );
 }
