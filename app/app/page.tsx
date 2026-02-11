@@ -116,10 +116,10 @@ export default function Home() {
   const featured2 = featured.find(f => f.position === 3)?.product;
   const featured3 = featured.find(f => f.position === 4)?.product;
 
-  const hero = heroProduct || defaultProducts.hero;
-  const prod1 = featured1 || defaultProducts.featured1;
-  const prod2 = featured2 || defaultProducts.featured2;
-  const prod3 = featured3 || defaultProducts.featured3;
+  // Get letter for hero product
+  const heroLetter = heroProduct 
+    ? getProductLetter(heroProduct.name) 
+    : defaultProducts.hero.letter;
 
   const formatPrice = (price: number, contactOnly?: boolean) => {
     if (contactOnly || price === 0) return 'Contact Us';
@@ -132,18 +132,18 @@ export default function Home() {
 
       <main className="home-main">
         {/* Hero Card */}
-        <Link href={`/product/${heroProduct?.slug || hero.slug}`} className="card dark hero-span">
-          <div className="giant-letter">{heroProduct ? getProductLetter(heroProduct.name) : hero.letter}</div>
+        <Link href={`/product/${heroProduct?.slug || defaultProducts.hero.slug}`} className="card dark hero-span">
+          <div className="giant-letter">{heroLetter}</div>
           <div className="hero-visual">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img 
-              src={heroProduct?.images?.[0] || hero.image} 
-              alt={heroProduct?.name || hero.name} 
+              src={heroProduct?.images?.[0] || defaultProducts.hero.image} 
+              alt={heroProduct?.name || defaultProducts.hero.name} 
               className="hero-img"
             />
           </div>
           <div className="hero-content" style={{ gridColumn: 1 }}>
-            <div className="label text-orange">{heroProduct?.subtitle || hero.subtitle}</div>
+            <div className="label text-orange">{heroProduct?.subtitle || defaultProducts.hero.subtitle}</div>
             <h1 className="overlay-text">
               THE SHAPE<br />
               OF SOUND<br />
@@ -153,27 +153,27 @@ export default function Home() {
           <div className="hero-content hero-content-right">
             <div className="price-tag">
               <span className="label">MSRP</span><br />
-              {formatPrice(heroProduct?.price || hero.price, heroProduct?.contactOnly)}
+              {formatPrice(heroProduct?.price || defaultProducts.hero.price, heroProduct?.contactOnly)}
             </div>
             <div className="desc-block">
-              {heroProduct?.description || hero.description}
+              {heroProduct?.description || defaultProducts.hero.description}
             </div>
           </div>
         </Link>
 
         {/* Product Card 1 */}
-        <Link href={`/product/${featured1?.slug || prod1.slug}`} className="card light product-span">
-          <div className="price-tag">{formatPrice(featured1?.price || prod1.price, featured1?.contactOnly)}</div>
+        <Link href={`/product/${featured1?.slug || defaultProducts.featured1.slug}`} className="card light product-span">
+          <div className="price-tag">{formatPrice(featured1?.price || defaultProducts.featured1.price, featured1?.contactOnly)}</div>
           <div className="orange-shape shape-rect"></div>
-          <div className="vertical-text">{featured1?.subtitle || prod1.subtitle}</div>
+          <div className="vertical-text">{featured1?.subtitle || defaultProducts.featured1.subtitle}</div>
           <h2 className="overlay-text" style={{ marginTop: 40 }}>
-            {(featured1?.name || prod1.name).split(' ')[0]}<br />
-            <span className="text-orange">{(featured1?.name || prod1.name).split(' ').slice(1).join(' ')}</span>
+            {(featured1?.name || defaultProducts.featured1.name).split(' ')[0]}<br />
+            <span className="text-orange">{(featured1?.name || defaultProducts.featured1.name).split(' ').slice(1).join(' ')}</span>
           </h2>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img 
-            src={featured1?.images?.[0] || prod1.image} 
-            alt={featured1?.name || prod1.name} 
+            src={featured1?.images?.[0] || defaultProducts.featured1.image} 
+            alt={featured1?.name || defaultProducts.featured1.name} 
             className="product-img"
           />
           {featured1?.colors && featured1.colors.length > 0 && (
@@ -194,20 +194,20 @@ export default function Home() {
         </Link>
 
         {/* Product Card 2 */}
-        <Link href={`/product/${featured2?.slug || prod2.slug}`} className="card dark product-span">
-          <div className="price-tag text-orange">{formatPrice(featured2?.price || prod2.price, featured2?.contactOnly)}</div>
+        <Link href={`/product/${featured2?.slug || defaultProducts.featured2.slug}`} className="card dark product-span">
+          <div className="price-tag text-orange">{formatPrice(featured2?.price || defaultProducts.featured2.price, featured2?.contactOnly)}</div>
           <div className="ghost-text">{featured2 ? getProductLetter(featured2.name) : 'H95'}</div>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img 
-            src={featured2?.images?.[0] || prod2.image} 
-            alt={featured2?.name || prod2.name} 
+            src={featured2?.images?.[0] || defaultProducts.featured2.image} 
+            alt={featured2?.name || defaultProducts.featured2.name} 
             className="product-img"
             style={{ width: '70%' }}
           />
           <div className="product-info">
-            <h2 style={{ fontSize: '2.5rem', marginBottom: 10 }}>{featured2?.name || prod2.name}</h2>
+            <h2 style={{ fontSize: '2.5rem', marginBottom: 10 }}>{featured2?.name || defaultProducts.featured2.name}</h2>
             <div className="desc-block" style={{ color: '#888' }}>
-              {featured2?.description || prod2.description}
+              {featured2?.description || defaultProducts.featured2.description}
             </div>
             <div className="pill-container" style={{ marginTop: 20 }}>
               <div className="pill filled">VIEW PRODUCT</div>
@@ -216,24 +216,24 @@ export default function Home() {
         </Link>
 
         {/* Product Card 3 */}
-        <Link href={`/product/${featured3?.slug || prod3.slug}`} className="card light product-span" style={{ backgroundColor: '#D4D4D4' }}>
-          <div className="price-tag">{formatPrice(featured3?.price || prod3.price, featured3?.contactOnly)}</div>
+        <Link href={`/product/${featured3?.slug || defaultProducts.featured3.slug}`} className="card light product-span" style={{ backgroundColor: '#D4D4D4' }}>
+          <div className="price-tag">{formatPrice(featured3?.price || defaultProducts.featured3.price, featured3?.contactOnly)}</div>
           <div className="orange-shape shape-circle" style={{ backgroundColor: 'white' }}></div>
           <div className="product-content-full">
             <h2 className="overlay-text" style={{ color: 'black', fontSize: '2.5rem' }}>
-              {(featured3?.name || prod3.name).split(' ')[0]}<br />{(featured3?.name || prod3.name).split(' ').slice(1).join(' ')}
+              {(featured3?.name || defaultProducts.featured3.name).split(' ')[0]}<br />{(featured3?.name || defaultProducts.featured3.name).split(' ').slice(1).join(' ')}
             </h2>
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img 
-              src={featured3?.images?.[0] || prod3.image} 
-              alt={featured3?.name || prod3.name} 
+              src={featured3?.images?.[0] || defaultProducts.featured3.image} 
+              alt={featured3?.name || defaultProducts.featured3.name} 
               className="product-img"
               style={{ width: '55%', top: '60%' }}
             />
             <div style={{ marginTop: 'auto' }}>
-              <div className="label" style={{ marginBottom: 5 }}>{featured3?.subtitle || prod3.subtitle}</div>
+              <div className="label" style={{ marginBottom: 5 }}>{featured3?.subtitle || defaultProducts.featured3.subtitle}</div>
               <div className="desc-block">
-                {featured3?.description || prod3.description}
+                {featured3?.description || defaultProducts.featured3.description}
               </div>
               <svg className="arrow-graphic arrow-left" viewBox="0 0 20 60">
                 <line x1="10" y1="0" x2="10" y2="55"></line>
