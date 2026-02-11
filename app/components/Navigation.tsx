@@ -69,15 +69,19 @@ export function Navigation({ activeLink }: NavigationProps) {
   return (
     <>
       <nav className="site-nav">
-        <Link href="/" className="logo">BOLT KS</Link>
+        <Link href="/" className="logo">BOLD</Link>
         
         {/* Desktop nav links */}
         <div className="nav-links desktop-nav">
           <Link href="/shop" style={linkStyle('shop')}>Shop</Link>
-          <Link href="/shop?brand=bang-olufsen">B&O</Link>
-          <Link href="/shop?brand=devialet">Devialet</Link>
-          <Link href="/shop?brand=loewe">Loewe</Link>
+          <Link href="/shop?brand=BANG_OLUFSEN">B&O</Link>
+          <Link href="/shop?brand=DEVIALET">Devialet</Link>
+          <Link href="/shop?brand=LOEWE">Loewe</Link>
           <Link href="/support" style={linkStyle('support')}>Support</Link>
+        </div>
+        
+        {/* Desktop actions (cart + account) */}
+        <div className="nav-actions desktop-nav">
           <Link href="/cart" className="nav-cart nav-icon">
             <CartIcon />
             {totalItems > 0 && <span className="cart-badge">{totalItems}</span>}
@@ -113,9 +117,9 @@ export function Navigation({ activeLink }: NavigationProps) {
           <div className="mobile-menu-links">
             <Link href="/" onClick={() => setMenuOpen(false)}>Home</Link>
             <Link href="/shop" onClick={() => setMenuOpen(false)}>Shop All</Link>
-            <Link href="/shop?brand=bang-olufsen" onClick={() => setMenuOpen(false)}>Bang & Olufsen</Link>
-            <Link href="/shop?brand=devialet" onClick={() => setMenuOpen(false)}>Devialet</Link>
-            <Link href="/shop?brand=loewe" onClick={() => setMenuOpen(false)}>Loewe</Link>
+            <Link href="/shop?brand=BANG_OLUFSEN" onClick={() => setMenuOpen(false)}>Bang & Olufsen</Link>
+            <Link href="/shop?brand=DEVIALET" onClick={() => setMenuOpen(false)}>Devialet</Link>
+            <Link href="/shop?brand=LOEWE" onClick={() => setMenuOpen(false)}>Loewe</Link>
             <Link href="/support" onClick={() => setMenuOpen(false)}>Support</Link>
           </div>
           <div className="mobile-menu-actions">

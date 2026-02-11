@@ -1,7 +1,8 @@
 'use client';
 
 import Link from 'next/link';
-import { useState, useEffect, useRef, useCallback } from 'react';
+import { useState, useEffect, useRef, useCallback, Suspense } from 'react';
+import { useSearchParams } from 'next/navigation';
 import { Navigation } from '@/components/Navigation';
 import { Footer } from '@/components/Footer';
 
@@ -48,7 +49,8 @@ function ArrowGraphic({ dark = false }: { dark?: boolean }) {
   );
 }
 
-export default function ShopPage() {
+function ShopContent() {
+  const searchParams = useSearchParams();
   const [allProducts, setAllProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [loadingMore, setLoadingMore] = useState(false);
@@ -56,6 +58,14 @@ export default function ShopPage() {
   const [selectedBrand, setSelectedBrand] = useState<BrandFilter>('all');
   const [selectedCategory, setSelectedCategory] = useState<Category>('all');
   const loaderRef = useRef<HTMLDivElement>(null);
+
+  // Read brand filter from URL on mount
+  useEffect(() => {
+    const brandParam = searchParams.get('brand');
+    if (brandParam && ['BANG_OLUFSEN', 'DEVIALET', 'LOEWE'].includes(brandParam)) {
+      setSelectedBrand(brandParam as BrandFilter);
+    }
+  }, [searchParams]);
 
   useEffect(() => {
     async function fetchProducts() {
@@ -410,5 +420,17 @@ export default function ShopPage() {
 
       <Footer />
     </>
+  );
+}
+
+export default function ShopPage() {
+  return (
+    <Suspense fallback={
+      <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <p>Loading...</p>
+      </div>
+    }>
+      <ShopContent />
+    </Suspense>
   );
 }
