@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { useCart } from '@/lib/cart';
+import { useAuth } from '@/lib/auth';
 import { useEffect, useState } from 'react';
 
 interface NavigationProps {
@@ -10,6 +11,7 @@ interface NavigationProps {
 
 export function Navigation({ activeLink }: NavigationProps) {
   const { getTotalItems } = useCart();
+  const { isAuthenticated, user } = useAuth();
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -51,6 +53,9 @@ export function Navigation({ activeLink }: NavigationProps) {
               {totalItems}
             </span>
           )}
+        </Link>
+        <Link href={mounted && isAuthenticated ? '/account' : '/login'} style={{ marginLeft: 15 }}>
+          {mounted && isAuthenticated ? `👤 ${user?.firstName || 'Account'}` : '👤 Sign In'}
         </Link>
       </div>
     </nav>
