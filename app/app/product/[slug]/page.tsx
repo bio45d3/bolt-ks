@@ -150,20 +150,20 @@ export default function ProductPage() {
         </div>
 
         {/* Product Image */}
-        <div className="card dark product-image-card" style={{ gridColumn: 'span 7', height: '70vh', minHeight: 500, display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative', overflow: 'hidden' }}>
-          <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', fontSize: 'clamp(10rem, 25vw, 25rem)', fontWeight: 900, opacity: 0.1, color: 'var(--accent-orange)', pointerEvents: 'none' }}>
+        <div className="card dark product-image-section">
+          <div className="product-ghost-letter">
             {letter}
           </div>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src={productImage}
             alt={product.name}
-            style={{ maxWidth: '60%', maxHeight: '70%', objectFit: 'contain', filter: 'drop-shadow(0 20px 40px rgba(0,0,0,0.4))', zIndex: 2 }}
+            className="product-main-image"
           />
         </div>
 
         {/* Product Info */}
-        <div className="product-info-card" style={{ gridColumn: 'span 5', padding: '20px 0' }}>
+        <div className="product-info-section">
           <div className="label text-orange" style={{ marginBottom: 10 }}>{product.subtitle || product.category}</div>
           <h1 style={{ fontSize: 'clamp(2rem, 4vw, 3.5rem)', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '-0.03em', lineHeight: 0.9, marginBottom: 20 }}>
             {product.name}

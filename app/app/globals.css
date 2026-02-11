@@ -608,67 +608,63 @@ main {
   }
 }
 
-/* Product page responsive */
-.product-layout {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 40px;
-}
-
-.product-image-card {
+/* Product Detail Page */
+.product-image-section {
+  grid-column: span 7;
   height: 70vh;
   min-height: 500px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
 }
 
-.product-info {
+.product-ghost-letter {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: clamp(10rem, 25vw, 25rem);
+  font-weight: 900;
+  opacity: 0.1;
+  color: var(--accent-orange);
+  pointer-events: none;
+}
+
+.product-main-image {
+  max-width: 60%;
+  max-height: 70%;
+  object-fit: contain;
+  filter: drop-shadow(0 20px 40px rgba(0,0,0,0.4));
+  z-index: 2;
+}
+
+.product-info-section {
+  grid-column: span 5;
   padding: 20px 0;
 }
 
-.product-title {
-  font-size: 3.5rem;
-  font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: -0.03em;
-  line-height: 0.9;
-  margin-bottom: 20px;
-}
-
-.product-price {
-  font-size: 2.5rem;
-  font-weight: 800;
-  margin-bottom: 30px;
-}
-
+/* Product page mobile */
 @media (max-width: 900px) {
-  .product-layout {
-    grid-template-columns: 1fr;
-    gap: 20px;
-  }
-  
-  .product-image-card {
+  .product-image-section {
+    grid-column: span 12 !important;
     height: 50vh;
     min-height: 350px;
   }
   
-  .product-info {
-    padding: 0 10px;
+  .product-info-section {
+    grid-column: span 12 !important;
+    padding: 0 10px 20px;
   }
   
-  .product-title {
-    font-size: 2.5rem;
+  .product-ghost-letter {
+    font-size: clamp(6rem, 20vw, 12rem);
   }
   
-  .product-price {
-    font-size: 2rem;
-  }
-  
-  .product-desc {
-    font-size: 1rem !important;
-  }
-  
-  .product-btn {
-    padding: 16px 30px !important;
-    font-size: 0.9rem !important;
+  .product-main-image {
+    max-width: 70%;
+    max-height: 80%;
   }
   
   /* Shop grid responsive */
@@ -691,5 +687,41 @@ main {
   main > .card[style*="span 6"],
   main > a[style*="span 6"] {
     grid-column: span 12 !important;
+  }
+  
+  .product-image-section {
+    height: 45vh;
+    min-height: 300px;
+  }
+  
+  .product-info-section h1 {
+    font-size: 2rem !important;
+  }
+  
+  .product-info-section > div[style*="font-size: 2.5rem"] {
+    font-size: 1.8rem !important;
+  }
+}
+
+/* Shop page product cards */
+.product-span {
+  transition: transform 0.3s ease;
+}
+
+@media (max-width: 768px) {
+  .product-span {
+    grid-column: span 6 !important;
+    height: 450px !important;
+  }
+  
+  .product-span h2 {
+    font-size: 1.5rem !important;
+  }
+}
+
+@media (max-width: 500px) {
+  .product-span {
+    grid-column: span 12 !important;
+    height: 400px !important;
   }
 }
