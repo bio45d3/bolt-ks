@@ -2,22 +2,14 @@
 
 import Link from 'next/link';
 
-function ArrowGraphic({ color = 'var(--accent-orange)', style = {} }: { color?: string; style?: React.CSSProperties }) {
+function ArrowGraphic({ style = {} }: { style?: React.CSSProperties }) {
   return (
-    <svg 
-      className="arrow-graphic" 
-      viewBox="0 0 20 60" 
-      style={{ stroke: color, ...style }}
-    >
+    <svg className="arrow-graphic" viewBox="0 0 20 60" style={style}>
       <line x1="10" y1="0" x2="10" y2="55" />
       <line x1="10" y1="55" x2="2" y2="45" />
       <line x1="10" y1="55" x2="18" y2="45" />
     </svg>
   );
-}
-
-function ColorDot({ color }: { color: string }) {
-  return <div className="color-dot" style={{ background: color }} />;
 }
 
 export default function Home() {
@@ -34,15 +26,16 @@ export default function Home() {
       </nav>
 
       <main>
-        {/* Hero Card */}
+        {/* Hero - Beolab 90 */}
         <div className="card dark hero-span">
           <div className="giant-letter">90</div>
           <div className="hero-visual">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              src="https://www.bang-olufsen.com/cdn-cgi/image/width=1200,quality=90/media/catalog/product/b/e/beolab-90-natural-aluminium-set-quater-product.png"
+              src="https://assets.bang-olufsen.com/images/11188/beolab-90-white-hero.png"
               alt="Beolab 90"
               className="hero-img"
+              onError={(e) => { e.currentTarget.src = 'https://pngimg.com/uploads/loudspeaker/loudspeaker_PNG101569.png'; }}
             />
           </div>
           <div className="hero-content" style={{ gridColumn: 1 }}>
@@ -76,18 +69,19 @@ export default function Home() {
           </h2>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            src="https://www.bang-olufsen.com/cdn-cgi/image/width=960,quality=90/media/catalog/product/b/e/beoplay-a1-2nd-gen-grey-mist-side-product.png"
+            src="https://images.ctfassets.net/8cd2csgvqd3m/4S2x8J1v3eG4k4A0K4uWq/1d9b3e1b7b8e1b3e1b7b8e1b3e1b7b8e/Beoplay_A9_4th_Gen_White_Hero.png"
             alt="Beoplay A9"
             className="product-img"
+            onError={(e) => { e.currentTarget.src = 'https://pngimg.com/d/wireless_speaker_PNG18.png'; }}
           />
           <div className="pill-container">
             <div className="pill">
               COVER
-              <ColorDot color="#ddd" />
+              <div className="color-dot" style={{ background: '#ddd' }} />
             </div>
             <div className="pill">
               LEGS
-              <ColorDot color="#8B4513" />
+              <div className="color-dot" style={{ background: '#8B4513' }} />
             </div>
           </div>
           <ArrowGraphic />
@@ -101,10 +95,11 @@ export default function Home() {
           </div>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            src="https://www.bang-olufsen.com/cdn-cgi/image/width=960,quality=90/media/catalog/product/b/e/beoplay-h95-adaptive-anc-black-angle-product_2.png"
+            src="https://images.ctfassets.net/8cd2csgvqd3m/5s4x8J1v3eG4k4A0K4uWq/1d9b3e1b7b8e1b3e1b7b8e1b3e1b7b8e/Beoplay_H95_Black_Hero.png"
             alt="Beoplay H95"
             className="product-img"
             style={{ width: '70%' }}
+            onError={(e) => { e.currentTarget.src = 'https://pngimg.com/uploads/headphones/headphones_PNG7645.png'; }}
           />
           <div style={{ zIndex: 3, padding: 30, marginTop: 'auto' }}>
             <h2 style={{ fontSize: '2.5rem', marginBottom: 10 }}>BEOPLAY H95</h2>
@@ -127,17 +122,18 @@ export default function Home() {
             </h2>
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              src="https://www.bang-olufsen.com/cdn-cgi/image/width=960,quality=90/media/catalog/product/b/e/beolit-20-black-anthracite-hero-quater-product.png"
+              src="https://images.ctfassets.net/8cd2csgvqd3m/1s4x8J1v3eG4k4A0K4uWq/1d9b3e1b7b8e1b3e1b7b8e1b3e1b7b8e/Beolit_20_Grey_Mist_Hero.png"
               alt="Beolit 20"
               className="product-img"
               style={{ width: '55%', top: '60%' }}
+              onError={(e) => { e.currentTarget.src = 'https://pngimg.com/uploads/bluetooth_speaker/bluetooth_speaker_PNG36.png'; }}
             />
             <div style={{ marginTop: 'auto' }}>
               <div className="label" style={{ marginBottom: 5 }}>BEOLIT 20</div>
               <div className="desc-block">
                 Big sound for every moment. Long-lasting battery, integrated wireless Qi charging.
               </div>
-              <ArrowGraphic color="black" style={{ right: 'auto', left: 30, bottom: 10, height: 40 }} />
+              <ArrowGraphic style={{ right: 'auto', left: 30, bottom: 10, height: 40, stroke: 'black' }} />
             </div>
           </div>
         </div>
