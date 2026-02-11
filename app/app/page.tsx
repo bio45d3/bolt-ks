@@ -18,10 +18,10 @@ export default function Home() {
       <nav>
         <div className="logo">BANG & OLUFSEN</div>
         <div className="nav-links">
-          <Link href="#">Speakers</Link>
-          <Link href="#">Headphones</Link>
-          <Link href="#">Televisions</Link>
-          <Link href="#">Support</Link>
+          <Link href="/speakers">Speakers</Link>
+          <Link href="/headphones">Headphones</Link>
+          <Link href="/televisions">Televisions</Link>
+          <Link href="/support">Support</Link>
         </div>
       </nav>
 
