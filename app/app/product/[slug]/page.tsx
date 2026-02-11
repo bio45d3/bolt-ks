@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import { useState } from 'react';
+import { useCart } from '@/lib/cart';
 
 // Combined product data
 const products: Record<string, {
@@ -124,6 +125,23 @@ export default function ProductPage() {
   
   const [selectedColor, setSelectedColor] = useState(0);
   const [quantity, setQuantity] = useState(1);
+  const [added, setAdded] = useState(false);
+  const { addItem } = useCart();
+
+  const handleAddToCart = () => {
+    const priceNum = parseFloat(product.price.replace(/[$,]/g, ''));
+    for (let i = 0; i < quantity; i++) {
+      addItem({
+        id: slug,
+        name: product.name,
+        price: priceNum,
+        image: product.image,
+        color: product.colors[selectedColor].name,
+      });
+    }
+    setAdded(true);
+    setTimeout(() => setAdded(false), 2000);
+  };
 
   if (!product) {
     return (
@@ -224,10 +242,11 @@ export default function ProductPage() {
 
           {/* Add to Cart */}
           <button
+            onClick={handleAddToCart}
             style={{
               width: '100%',
               padding: '20px 40px',
-              background: 'var(--accent-orange)',
+              background: added ? '#4CAF50' : 'var(--accent-orange)',
               border: 'none',
               color: 'white',
               fontSize: '1rem',
@@ -235,10 +254,31 @@ export default function ProductPage() {
               textTransform: 'uppercase',
               cursor: 'pointer',
               marginBottom: 15,
+              transition: 'background 0.3s ease',
             }}
           >
-            Add to Cart
+            {added ? '✓ Added to Cart' : 'Add to Cart'}
           </button>
+          
+          <Link
+            href="/cart"
+            style={{
+              display: 'block',
+              width: '100%',
+              padding: '20px 40px',
+              background: '#000',
+              border: 'none',
+              color: 'white',
+              fontSize: '1rem',
+              fontWeight: 800,
+              textTransform: 'uppercase',
+              textAlign: 'center',
+              textDecoration: 'none',
+              marginBottom: 15,
+            }}
+          >
+            View Cart
+          </Link>
           
           <button
             style={{
