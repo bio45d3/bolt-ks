@@ -49,6 +49,16 @@ function ArrowGraphic({ dark = false }: { dark?: boolean }) {
   );
 }
 
+// Derive brand from product name if not set in database
+function getBrand(product: Product): 'BANG_OLUFSEN' | 'DEVIALET' | 'LOEWE' | null {
+  if (product.brand) return product.brand;
+  const name = product.name.toLowerCase();
+  if (name.includes('beo') || name.includes('b&o')) return 'BANG_OLUFSEN';
+  if (name.includes('phantom') || name.includes('devialet') || name.includes('mania') || name.includes('dione') || name.includes('gemini') || name.includes('cocoon') || name.includes('treepod') || name.includes('tree ') || name.includes('gecko')) return 'DEVIALET';
+  if (name.includes('klang') || name.includes('stellar') || name.includes('iconic') || name.includes('we.') || name.includes('bild') || name.includes('inspire') || name.includes('radio.') || name.includes('home cinema') || name.includes('home.cinema')) return 'LOEWE';
+  return null;
+}
+
 function ShopContent() {
   const searchParams = useSearchParams();
   const [allProducts, setAllProducts] = useState<Product[]>([]);
@@ -92,7 +102,9 @@ function ShopContent() {
   const filteredProducts = allProducts
     .filter(p => {
       if (selectedBrand === 'all') return true;
-      return p.brand === selectedBrand;
+      // Use explicit brand if set, otherwise infer from name
+      const productBrand = p.brand || getBrand(p);
+      return productBrand === selectedBrand;
     })
     .filter(p => {
       if (selectedCategory === 'all') return true;
@@ -133,17 +145,6 @@ function ShopContent() {
 
   const categories = ['all', 'speakers', 'headphones', 'televisions', 'soundbars', 'accessories'] as const;
   const brands = ['all', 'BANG_OLUFSEN', 'DEVIALET', 'LOEWE'] as const;
-
-  // Derive brand from SKU prefix if not set
-  function getBrand(product: Product): 'BANG_OLUFSEN' | 'DEVIALET' | 'LOEWE' | null {
-    if (product.brand) return product.brand;
-    // Fallback: check name patterns
-    const name = product.name.toLowerCase();
-    if (name.includes('beo') || name.includes('b&o')) return 'BANG_OLUFSEN';
-    if (name.includes('phantom') || name.includes('devialet') || name.includes('mania') || name.includes('dione') || name.includes('gemini')) return 'DEVIALET';
-    if (name.includes('klang') || name.includes('stellar') || name.includes('iconic') || name.includes('we.') || name.includes('bild') || name.includes('inspire')) return 'LOEWE';
-    return null;
-  }
 
   return (
     <>
