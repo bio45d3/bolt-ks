@@ -80,8 +80,14 @@ export default function ShopPage() {
   }, [selectedBrand, selectedCategory]);
 
   const filteredProducts = allProducts
-    .filter(p => selectedBrand === 'all' || p.brand === selectedBrand || (!p.brand && selectedBrand === 'all'))
-    .filter(p => selectedCategory === 'all' || p.categorySlug === selectedCategory);
+    .filter(p => {
+      if (selectedBrand === 'all') return true;
+      return p.brand === selectedBrand;
+    })
+    .filter(p => {
+      if (selectedCategory === 'all') return true;
+      return p.categorySlug === selectedCategory;
+    });
 
   const displayedProducts = filteredProducts.slice(0, displayCount);
   const hasMore = displayCount < filteredProducts.length;
