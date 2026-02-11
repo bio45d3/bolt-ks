@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { Navigation } from '@/components/Navigation';
 import { Footer } from '@/components/Footer';
 
@@ -26,6 +26,8 @@ interface Product {
   inStock: boolean;
 }
 
+const PRODUCTS_PER_PAGE = 12;
+
 const brandInfo = {
   'BANG_OLUFSEN': { name: 'Bang & Olufsen', abbr: 'B&O', country: 'Denmark' },
   'DEVIALET': { name: 'Devialet', abbr: 'DEV', country: 'France' },
@@ -47,10 +49,13 @@ function ArrowGraphic({ dark = false }: { dark?: boolean }) {
 }
 
 export default function ShopPage() {
-  const [products, setProducts] = useState<Product[]>([]);
+  const [allProducts, setAllProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
+  const [loadingMore, setLoadingMore] = useState(false);
+  const [displayCount, setDisplayCount] = useState(PRODUCTS_PER_PAGE);
   const [selectedBrand, setSelectedBrand] = useState<BrandFilter>('all');
   const [selectedCategory, setSelectedCategory] = useState<Category>('all');
+  const loaderRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     async function fetchProducts() {
@@ -58,7 +63,7 @@ export default function ShopPage() {
         const res = await fetch('/api/products');
         if (res.ok) {
           const data = await res.json();
-          setProducts(data);
+          setAllProducts(data);
         }
       } catch (error) {
         console.error('Failed to fetch products:', error);
@@ -69,9 +74,46 @@ export default function ShopPage() {
     fetchProducts();
   }, []);
 
-  const filteredProducts = products
-    .filter(p => selectedBrand === 'all' || p.brand === selectedBrand)
+  // Reset display count when filters change
+  useEffect(() => {
+    setDisplayCount(PRODUCTS_PER_PAGE);
+  }, [selectedBrand, selectedCategory]);
+
+  const filteredProducts = allProducts
+    .filter(p => selectedBrand === 'all' || p.brand === selectedBrand || (!p.brand && selectedBrand === 'all'))
     .filter(p => selectedCategory === 'all' || p.categorySlug === selectedCategory);
+
+  const displayedProducts = filteredProducts.slice(0, displayCount);
+  const hasMore = displayCount < filteredProducts.length;
+
+  // Infinite scroll observer
+  const loadMore = useCallback(() => {
+    if (hasMore && !loadingMore) {
+      setLoadingMore(true);
+      // Small delay for smooth UX
+      setTimeout(() => {
+        setDisplayCount(prev => prev + PRODUCTS_PER_PAGE);
+        setLoadingMore(false);
+      }, 300);
+    }
+  }, [hasMore, loadingMore]);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          loadMore();
+        }
+      },
+      { threshold: 0.1, rootMargin: '100px' }
+    );
+
+    if (loaderRef.current) {
+      observer.observe(loaderRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, [loadMore]);
 
   const categories = ['all', 'speakers', 'headphones', 'televisions', 'soundbars', 'accessories'] as const;
   const brands = ['all', 'BANG_OLUFSEN', 'DEVIALET', 'LOEWE'] as const;
@@ -154,7 +196,7 @@ export default function ShopPage() {
             ))}
           </div>
           <span style={{ color: '#666', fontSize: '0.9rem' }}>
-            {loading ? 'Loading...' : `${filteredProducts.length} product${filteredProducts.length !== 1 ? 's' : ''}`}
+            {loading ? 'Loading...' : `Showing ${displayedProducts.length} of ${filteredProducts.length}`}
           </span>
         </div>
 
@@ -167,7 +209,7 @@ export default function ShopPage() {
         )}
 
         {/* Product Grid */}
-        {!loading && filteredProducts.map((product, index) => {
+        {!loading && displayedProducts.map((product, index) => {
           const isDark = index % 3 === 1;
           const bgColor = index % 3 === 2 ? '#D4D4D4' : undefined;
           const shape = index % 2 === 0 ? 'rect' : 'circle';
@@ -210,7 +252,7 @@ export default function ShopPage() {
                   letterSpacing: '0.05em',
                 }}>
                   {brandInfo[productBrand].name}
-                </div>
+              </div>
               )}
               
               {!isDark && (
@@ -268,6 +310,45 @@ export default function ShopPage() {
           );
         })}
 
+        {/* Load More Trigger (Infinite Scroll) */}
+        {!loading && hasMore && (
+          <div 
+            ref={loaderRef}
+            style={{ 
+              gridColumn: 'span 12', 
+              textAlign: 'center', 
+              padding: 40,
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              gap: 10,
+            }}
+          >
+            {loadingMore ? (
+              <>
+                <div style={{ 
+                  width: 20, 
+                  height: 20, 
+                  border: '2px solid #ccc',
+                  borderTopColor: 'var(--accent-orange)',
+                  borderRadius: '50%',
+                  animation: 'spin 0.8s linear infinite',
+                }} />
+                <span style={{ color: '#666' }}>Loading more...</span>
+              </>
+            ) : (
+              <span style={{ color: '#999', fontSize: '0.9rem' }}>Scroll for more</span>
+            )}
+          </div>
+        )}
+
+        {/* End of Products */}
+        {!loading && !hasMore && filteredProducts.length > 0 && (
+          <div style={{ gridColumn: 'span 12', textAlign: 'center', padding: 30, color: '#999', fontSize: '0.9rem' }}>
+            — All {filteredProducts.length} products loaded —
+          </div>
+        )}
+
         {/* Empty State */}
         {!loading && filteredProducts.length === 0 && (
           <div className="card light" style={{ gridColumn: 'span 12', textAlign: 'center', padding: 80 }}>
@@ -313,6 +394,13 @@ export default function ShopPage() {
           </div>
         </div>
       </main>
+
+      {/* Spinner animation */}
+      <style jsx>{`
+        @keyframes spin {
+          to { transform: rotate(360deg); }
+        }
+      `}</style>
 
       <Footer />
     </>
