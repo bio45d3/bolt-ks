@@ -1,0 +1,67 @@
+@import "tailwindcss";
+
+:root {
+  --bg-color: #E6E6E6;
+  --card-light: #EFEFEF;
+  --card-dark: #121212;
+  --accent-orange: #FF4D00;
+  --text-dark: #000000;
+  --text-light: #FFFFFF;
+  --border-color: #000000;
+  --radius: 18px;
+  --font-main: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: var(--bg-color);
+  font-family: var(--font-main);
+  color: var(--text-dark);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Utility classes */
+.card-hover {
+  transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.card-hover:hover {
+  transform: translateY(-5px);
+}
+
+.image-hover {
+  transition: transform 0.3s ease;
+}
+
+.image-hover:hover {
+  transform: translate(-50%, -55%) scale(1.02);
+}
+
+/* Mix blend mode for navigation */
+.nav-blend {
+  mix-blend-mode: difference;
+}
+
+/* Responsive grid */
+@media (max-width: 1200px) {
+  .grid-span-4 {
+    grid-column: span 6 !important;
+  }
+}
+
+@media (max-width: 800px) {
+  .grid-span-4,
+  .grid-span-6 {
+    grid-column: span 12 !important;
+  }
+  
+  .hero-title {
+    font-size: 15vw !important;
+  }
+}
